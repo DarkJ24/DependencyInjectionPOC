@@ -127,12 +127,12 @@ public class ScannedClassAnnotation implements ScannedClass {
     }
 
     @Override
-    public List<ScannedClass> getDependencieservices() {
+    public List<ScannedClass> getDependencyServices() {
         return Collections.unmodifiableList(this.dependencyClasses);
     }
 
     @Override
-    public void addDependenciesService(ScannedClass dependencyClasses) {
+    public void addDependencyServices(ScannedClass dependencyClasses) {
         this.dependantClasses.add(dependencyClasses);
     }
 

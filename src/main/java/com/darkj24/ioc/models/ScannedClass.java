@@ -30,9 +30,9 @@ public interface ScannedClass {
 
     public void addDependantService(ScannedClass dependantClasses);
 
-    public List<ScannedClass> getDependencieservices();
+    public List<ScannedClass> getDependencyServices();
 
-    public void addDependenciesService(ScannedClass dependencyClasses);
+    public void addDependencyServices(ScannedClass dependencyClasses);
 
     public Method getInitMethod();
 
