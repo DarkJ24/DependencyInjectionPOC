@@ -27,9 +27,15 @@ public class DependencyInjector {
 
         Set<Class<?>> locatedClasses = classLocator.locateClasses(directory.getName());
         Set<ScannedClass> scannedClassAnnotations = classScanner.scanClasses(locatedClasses);
-        System.out.println(scannedClassAnnotations);
+        //System.out.println(scannedClassAnnotations);
         for (ScannedClass s : scannedClassAnnotations) {
+            System.out.println(s.getType());
+            System.out.println(s.getScope());
             System.out.println(s.getTargetConstructor());
+            System.out.println(s.getInitMethod());
+            System.out.println(s.getDestroyMethod());
+            System.out.println(s.getTargetConstructor());
+            System.out.println(s.getAutowiringMode());
             System.out.println(s.getBeans());
         }
     }

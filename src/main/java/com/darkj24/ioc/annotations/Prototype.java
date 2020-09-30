@@ -9,6 +9,6 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface Provider {
-    public AutowiringMode autowire() default AutowiringMode.NO;
+public @interface Prototype {
+
 }

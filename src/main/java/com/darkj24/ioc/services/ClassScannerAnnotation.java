@@ -1,9 +1,9 @@
 package com.darkj24.ioc.services;
 
-import com.darkj24.ioc.annotations.Autowired;
-import com.darkj24.ioc.annotations.Bean;
-import com.darkj24.ioc.annotations.Provider;
+import com.darkj24.ioc.annotations.*;
 import com.darkj24.ioc.config.AnnotationsConfiguration;
+import com.darkj24.ioc.enums.AutowiringMode;
+import com.darkj24.ioc.enums.Scope;
 import com.darkj24.ioc.models.Constants;
 import com.darkj24.ioc.models.ScannedClass;
 import com.darkj24.ioc.models.ScannedClassAnnotation;
@@ -36,19 +36,40 @@ public class ClassScannerAnnotation implements ClassScanner {
                 continue;
             }
 
+            Annotation providerAnnotation = null;
+            Scope scope = Scope.SINGLETON;
+            boolean isLazyInit = false;
+            AutowiringMode autowiringMode = AutowiringMode.NO;
+
             for (Annotation annotation : cls.getAnnotations()) {
                 if (providerAnnotations.contains(annotation.annotationType())) {
-                    ScannedClassAnnotation serviceDetails = new ScannedClassAnnotation(
-                            cls,
-                            annotation,
-                            this.findSuitableConstructor(cls),
-                            this.findBeans(cls)
-                    );
-
-                    scannedClassAnnotations.add(serviceDetails);
-
-                    break;
+                    providerAnnotation = annotation;
+                    if (annotation instanceof  Provider) {
+                        Provider pAnnotation = (Provider) annotation;
+                        autowiringMode = pAnnotation.autowire();
+                    }
                 }
+                if (annotation.annotationType() == Singleton.class) {
+                    scope = Scope.SINGLETON;
+                }
+                if (annotation.annotationType() == Prototype.class) {
+                    scope = Scope.PROTOTYPE;
+                }
+                if (annotation.annotationType() == Lazy.class) {
+                    isLazyInit = true;
+                }
+            }
+
+            if (providerAnnotation != null) {
+                ScannedClassAnnotation scannedClass = new ScannedClassAnnotation(
+                        cls,
+                        providerAnnotation,
+                        this.findSuitableConstructor(cls),
+                        this.findInitMethod(cls), this.findDestroyMethod(cls), scope, autowiringMode, isLazyInit, this.findBeans(cls)
+
+                );
+
+                scannedClassAnnotations.add(scannedClass);
             }
         }
 
@@ -88,6 +109,25 @@ public class ClassScannerAnnotation implements ClassScanner {
         }
 
         return beanMethods.toArray(new Method[0]);
+    }
+
+    private Method findInitMethod(Class<?> cls) {
+        return findAnnotation(cls, Init.class);
+    }
+
+    private Method findDestroyMethod(Class<?> cls) {
+        return findAnnotation(cls, Destroy.class);
+    }
+
+    private Method findAnnotation(Class<?> cls, Class annotation) {
+        for (Method method : cls.getDeclaredMethods()) {
+            if (method.isAnnotationPresent(annotation)) {
+                method.setAccessible(true);
+                return method;
+            }
+        }
+
+        return null;
     }
 
     private void init() {

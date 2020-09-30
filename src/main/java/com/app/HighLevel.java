@@ -1,8 +1,11 @@
 package com.app;
 
-import com.darkj24.ioc.annotations.Provider;
+import com.darkj24.ioc.annotations.*;
+import com.darkj24.ioc.enums.AutowiringMode;
 
-@Provider
+@Provider(autowire = AutowiringMode.BY_NAME)
+@Prototype
+@Lazy
 public class HighLevel {
 
     private LowLevel lowLevel;
@@ -10,6 +13,16 @@ public class HighLevel {
     private LowLevel2 lowLevel2;
 
     public HighLevel () {
+    }
+
+    @Init
+    public void init(){
+        System.out.println("Init HighLevel");
+    }
+
+    @Destroy
+    public void destroy(){
+        System.out.println("Destroy HighLevel");
     }
 
     public LowLevel getLowLevel() {
