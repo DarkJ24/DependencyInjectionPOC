@@ -55,12 +55,12 @@ public class XmlParser {
                     System.out.println(element.getAttribute(TAG_CLASS));
 
                     DataStructureBean beans = new DataStructureBean.BeanBuilder(element.getAttribute(TAG_CLASS))
-                            .scope(element.getAttribute(TAG_SCOPE))
-                            .constructorArg(element.getAttribute(TAG_CONSTRUCTOR))
-                            .autowiringMode(element.getAttribute(TAG_AUTOWIRING_MODE))
-                            .lazyInit(Boolean.parseBoolean(element.getAttribute(TAG_LAZY)))
-                            .initMethod(element.getAttribute(TAG_INIT))
-                            .destroyMethod(element.getAttribute(TAG_DESTROY))
+                            .addScope(element.getAttribute(TAG_SCOPE))
+                            .addConstructorArg(element.getAttribute(TAG_CONSTRUCTOR))
+                            .addAutowiringMode(element.getAttribute(TAG_AUTOWIRING_MODE))
+                            .addLazyInit(Boolean.parseBoolean(element.getAttribute(TAG_LAZY)))
+                            .addInitMethod(element.getAttribute(TAG_INIT))
+                            .addDestroyMethod(element.getAttribute(TAG_DESTROY))
                             .build();
 
                     if(element.getElementsByTagName(TAG_PROPERTY).getLength() != 0) {

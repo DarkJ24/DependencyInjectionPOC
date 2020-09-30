@@ -77,31 +77,31 @@ public class DataStructureBean {
             this.cls=cls;
         }
 
-        public BeanBuilder scope(String scope){
+        public BeanBuilder addScope(String scope){
             this.scope=scope;
             return this;
         }
 
-        public BeanBuilder constructorArg(String constructorArg){
+        public BeanBuilder addConstructorArg(String constructorArg){
             this.constructorArg=constructorArg;
             return this;
         }
 
-        public BeanBuilder autowiringMode(String autowiringMode){
+        public BeanBuilder addAutowiringMode(String autowiringMode){
             this.autowiringMode=autowiringMode;
             return this;
         }
 
-        public BeanBuilder lazyInit(boolean lazyInit){
+        public BeanBuilder addLazyInit(boolean lazyInit){
             this.lazyInit=lazyInit;
             return this;
         }
 
-        public BeanBuilder initMethod(String initMethod){
+        public BeanBuilder addInitMethod(String initMethod){
             this.initMethod=initMethod;
             return this;
         }
-        public BeanBuilder destroyMethod(String destroyMethod){
+        public BeanBuilder addDestroyMethod(String destroyMethod){
             this.destroyMethod=destroyMethod;
             return this;
         }
