@@ -1,5 +1,6 @@
 package com.darkj24.ioc;
 
+import com.app.MainApplication;
 import com.darkj24.ioc.config.MainConfiguration;
 import com.darkj24.ioc.enums.DirectoryType;
 import com.darkj24.ioc.models.Directory;
@@ -34,7 +35,7 @@ public class DependencyInjector {
     }
 
     public static void main(String[] args) {
-        run(DependencyInjector.class);
+        run(MainApplication.class);
     }
 
 }
