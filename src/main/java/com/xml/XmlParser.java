@@ -57,9 +57,10 @@ public class XmlParser {
                     DataStructureBean beans = new DataStructureBean.BeanBuilder(element.getAttribute(TAG_CLASS))
                             .scope(element.getAttribute(TAG_SCOPE))
                             .constructorArg(element.getAttribute(TAG_CONSTRUCTOR))
-                            .autowiringMode(Boolean.parseBoolean(element.getAttribute(TAG_AUTOWIRING_MODE)))
+                            .autowiringMode(element.getAttribute(TAG_AUTOWIRING_MODE))
                             .lazyInit(Boolean.parseBoolean(element.getAttribute(TAG_LAZY)))
-                            .destroyMethod(Boolean.parseBoolean(element.getAttribute(TAG_DESTROY)))
+                            .initMethod(element.getAttribute(TAG_INIT))
+                            .destroyMethod(element.getAttribute(TAG_DESTROY))
                             .build();
 
                     if(element.getElementsByTagName(TAG_PROPERTY).getLength() != 0) {
@@ -95,7 +96,23 @@ public class XmlParser {
         }
     }
 
-    public String getCls(String id){
-        return mapBeans.get(id).getCls();
+    public String getCls(String beanId){
+        return mapBeans.get(beanId).getCls();
     }
+    public String getScope(String beanId){
+        return mapBeans.get(beanId).getScope();
+    }
+    public String getConstructorArg(String beanId){
+        return mapBeans.get(beanId).getConstructorArg();
+    }
+    public String getAutowiringMode(String beanId){
+        return mapBeans.get(beanId).getAutowiringMode();
+    }
+    public boolean getLazyInit(String beanId){
+        return mapBeans.get(beanId).isLazyInit();
+    }
+    public String getInitMethod(String beanId){ return mapBeans.get(beanId).getInitMethod(); }
+    public String getDestroyMethod(String beanId){ return mapBeans.get(beanId).getDestroyMethod(); }
+    public String getPropertyValue(String beanId, String propertyName){ return mapBeans.get(beanId).getPropertyValue(propertyName); }
+    public String getPropertyRef(String beanId, String propertyName){ return mapBeans.get(beanId).getPropertyRef(propertyName); }
 }

@@ -7,9 +7,10 @@ public class DataStructureBean {
     private String cls = null;
     private String scope = null;
     private String constructorArg = null;
-    private boolean autowiringMode = false;
+    private String autowiringMode = "no";
     private boolean lazyInit = false;
-    private boolean destroyMethod = false;
+    private String initMethod = "init";
+    private String destroyMethod = "destroy";
     private Map<String, DataStructureProperties> properties = new HashMap<String,DataStructureProperties>(); //HashMap para almacenar varias dependencias
 
     private DataStructureBean(BeanBuilder builder) {
@@ -18,6 +19,7 @@ public class DataStructureBean {
         this.constructorArg = builder.constructorArg;
         this.autowiringMode = builder.autowiringMode;
         this.lazyInit = builder.lazyInit;
+        this.initMethod = builder.initMethod;
         this.destroyMethod = builder.destroyMethod;
     }
 
@@ -33,16 +35,20 @@ public class DataStructureBean {
         return constructorArg;
     }
 
-    public boolean isAutowiringMode() {
+    public String getAutowiringMode() {
         return autowiringMode;
+    }
+
+    public String getInitMethod() {
+        return initMethod;
+    }
+
+    public String getDestroyMethod() {
+        return destroyMethod;
     }
 
     public boolean isLazyInit() {
         return lazyInit;
-    }
-
-    public boolean isDestroyMethod() {
-        return destroyMethod;
     }
 
     public void addNewProperty(String name, String value, String ref){
@@ -62,9 +68,10 @@ public class DataStructureBean {
         private String cls;
         private String scope;
         private String constructorArg;
-        private boolean autowiringMode;
+        private String autowiringMode;
         private boolean lazyInit;
-        private boolean destroyMethod;
+        private String initMethod;
+        private String destroyMethod;
 
         public BeanBuilder(String cls){
             this.cls=cls;
@@ -80,7 +87,7 @@ public class DataStructureBean {
             return this;
         }
 
-        public BeanBuilder autowiringMode(boolean autowiringMode){
+        public BeanBuilder autowiringMode(String autowiringMode){
             this.autowiringMode=autowiringMode;
             return this;
         }
@@ -90,7 +97,11 @@ public class DataStructureBean {
             return this;
         }
 
-        public BeanBuilder destroyMethod(boolean destroyMethod){
+        public BeanBuilder initMethod(String initMethod){
+            this.initMethod=initMethod;
+            return this;
+        }
+        public BeanBuilder destroyMethod(String destroyMethod){
             this.destroyMethod=destroyMethod;
             return this;
         }
