@@ -1,105 +1,56 @@
 package com.darkj24.ioc.models;
 
-import com.darkj24.ioc.annotations.Provider;
+import com.darkj24.ioc.enums.AutowiringMode;
+import com.darkj24.ioc.enums.Scope;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class ScannedClass {
+public interface ScannedClass {
 
-    private Class<?> type;
+    public Class<?> getType();
 
-    private Annotation annotation;
+    public void setType(Class<?> type);
 
-    private Constructor<?> targetConstructor;
+    public Constructor<?> getTargetConstructor();
 
-    private Object instance;
+    public void setTargetConstructor(Constructor<?> targetConstructor);
 
-    private Method[] beans;
+    public Object getInstance();
 
-    private final List<ScannedClass> dependantClasses;
+    public void setInstance(Object instance);
 
-    public ScannedClass() {
-        this.dependantClasses = new ArrayList<>();
-    }
+    public Method[] getBeans();
 
-    public ScannedClass(Class<?> type,
-                          Annotation annotation, Constructor<?> targetConstructor,
-                          Method[] beans) {
-        this();
-        this.setType(type);
-        this.setAnnotation(annotation);
-        this.setTargetConstructor(targetConstructor);
-        this.setBeans(beans);
-    }
+    public void setBeans(Method[] beans);
 
-    public Class<?> getType() {
-        return this.type;
-    }
+    public List<ScannedClass> getDependantServices();
 
-    public void setType(Class<?> type) {
-        this.type = type;
-    }
+    public void addDependantService(ScannedClass dependantClasses);
 
-    public Annotation getAnnotation() {
-        return this.annotation;
-    }
+    public List<ScannedClass> getDependencieservices();
 
-    public void setAnnotation(Annotation annotation) {
-        this.annotation = annotation;
-    }
+    public void addDependenciesService(ScannedClass dependencyClasses);
 
-    public Constructor<?> getTargetConstructor() {
-        return this.targetConstructor;
-    }
+    public Method getInitMethod();
 
-    public void setTargetConstructor(Constructor<?> targetConstructor) {
-        this.targetConstructor = targetConstructor;
-    }
+    public void setInitMethod(Method method);
 
-    public Object getInstance() {
-        return this.instance;
-    }
+    public Method getDestroyMethod();
 
-    public void setInstance(Object instance) {
-        this.instance = instance;
-    }
+    public void setDestroyMethod(Method method);
 
-    public Method[] getBeans() {
-        return this.beans;
-    }
+    public boolean isLazyInit();
 
-    public void setBeans(Method[] beans) {
-        this.beans = beans;
-    }
+    public void setLazyInit(boolean isLazyInit);
 
-    public List<ScannedClass> getDependantServices() {
-        return Collections.unmodifiableList(this.dependantClasses);
-    }
+    public Scope getScope();
 
-    public void addDependantService(ScannedClass dependantClasses) {
-        this.dependantClasses.add(dependantClasses);
-    }
+    public void setScope(Scope scope);
 
-    @Override
-    public int hashCode() {
-        if (this.type == null) {
-            return super.hashCode();
-        }
+    public AutowiringMode getAutowiringMode();
 
-        return this.type.hashCode();
-    }
-
-    @Override
-    public String toString() {
-        if (this.type == null) {
-            return super.toString();
-        }
-
-        return this.type.getName();
-    }
+    public void setAutowiringMode(AutowiringMode autowiringMode);
 }

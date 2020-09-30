@@ -4,7 +4,9 @@ import com.darkj24.ioc.annotations.Autowired;
 import com.darkj24.ioc.annotations.Bean;
 import com.darkj24.ioc.annotations.Provider;
 import com.darkj24.ioc.config.AnnotationsConfiguration;
+import com.darkj24.ioc.models.Constants;
 import com.darkj24.ioc.models.ScannedClass;
+import com.darkj24.ioc.models.ScannedClassAnnotation;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
@@ -15,18 +17,18 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class ClassScannerImpl implements ClassScanner {
+public class ClassScannerAnnotation implements ClassScanner {
 
     private final AnnotationsConfiguration configuration;
 
-    public ClassScannerImpl(AnnotationsConfiguration configuration) {
+    public ClassScannerAnnotation(AnnotationsConfiguration configuration) {
         this.configuration = configuration;
         this.init();
     }
 
     @Override
     public Set<ScannedClass> scanClasses(Set<Class<?>> locatedClasses) {
-        final Set<ScannedClass> scannedClasses = new HashSet<>();
+        final Set<ScannedClassAnnotation> scannedClassAnnotations = new HashSet<>();
         final Set<Class<? extends Annotation>> providerAnnotations = configuration.getProviderAnnotations();
 
         for (Class<?> cls : locatedClasses) {
@@ -36,21 +38,21 @@ public class ClassScannerImpl implements ClassScanner {
 
             for (Annotation annotation : cls.getAnnotations()) {
                 if (providerAnnotations.contains(annotation.annotationType())) {
-                    ScannedClass serviceDetails = new ScannedClass(
+                    ScannedClassAnnotation serviceDetails = new ScannedClassAnnotation(
                             cls,
                             annotation,
                             this.findSuitableConstructor(cls),
                             this.findBeans(cls)
                     );
 
-                    scannedClasses.add(serviceDetails);
+                    scannedClassAnnotations.add(serviceDetails);
 
                     break;
                 }
             }
         }
 
-        return scannedClasses.stream()
+        return scannedClassAnnotations.stream()
                 .sorted(new ScannedClassComparator())
                 .collect(Collectors.toCollection(LinkedHashSet::new));
     }
@@ -93,9 +95,9 @@ public class ClassScannerImpl implements ClassScanner {
         this.configuration.getProviderAnnotations().add(Provider.class);
     }
 
-    private class ScannedClassComparator implements Comparator<ScannedClass> {
+    private class ScannedClassComparator implements Comparator<ScannedClassAnnotation> {
         @Override
-        public int compare(ScannedClass class1, ScannedClass class2) {
+        public int compare(ScannedClassAnnotation class1, ScannedClassAnnotation class2) {
             if (class1.getTargetConstructor() == null || class2.getTargetConstructor() == null) {
                 return 0;
             }
