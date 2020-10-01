@@ -11,32 +11,25 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+
+import static com.darkj24.ioc.models.Constants.*;
 
 public class XmlParser {
 
-    static final String FILE_PATH = "context.xml";
-    static final String TAG_BEAN = "bean";
-    static final String TAG_ID = "id";
-    static final String TAG_CLASS = "class";
-    static final String TAG_SCOPE = "scope";
-    static final String TAG_CONSTRUCTOR = "constructorArg";
-    static final String TAG_AUTOWIRING_MODE = "autowiringMode";
-    static final String TAG_LAZY = "lazyInit";
-    static final String TAG_INIT = "initMethod";
-    static final String TAG_DESTROY = "destroyMethod";
-    static final String TAG_PROPERTY = "property";
-    static final String TAG_PROPERTY_NAME = "name";
-    static final String TAG_PROPERTY_VALUE = "value";
-    static final String TAG_PROPERTY_REF = "ref";
+    private String FILE_PATH = "context.xml";
+    private Map<String, DataStructureBean> mapBeans = new HashMap<String, DataStructureBean>();
 
+    public XmlParser(String FILE_PATH) {
+        this.FILE_PATH = FILE_PATH;
+    }
 
     File inputFile = new File(FILE_PATH);
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     DocumentBuilder builder;
-
-    Map<String, DataStructureBean> mapBeans = new HashMap<String, DataStructureBean>();
 
     {
         try {
@@ -94,6 +87,40 @@ public class XmlParser {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public ArrayList<String> getAllCls(){
+        ArrayList<String> classes = new ArrayList<String>();
+        Iterator<Map.Entry<String,DataStructureBean>> iterator = mapBeans.entrySet().iterator();
+
+        while(iterator.hasNext()){
+            Map.Entry<String,DataStructureBean> set = (Map.Entry<String,DataStructureBean>) iterator.next();
+            classes.add(set.getValue().getCls());
+        }
+        return classes;
+    }
+
+    public ArrayList<String> getAllBeanID(){
+        ArrayList<String> beanIds = new ArrayList<String>();
+        Iterator<Map.Entry<String,DataStructureBean>> iterator = mapBeans.entrySet().iterator();
+
+        while(iterator.hasNext()){
+            Map.Entry<String,DataStructureBean> set = (Map.Entry<String,DataStructureBean>) iterator.next();
+            beanIds.add(set.getKey());
+        }
+        return beanIds;
+    }
+
+    public ArrayList<String> getAllPropertiesFromBeanId(String beanId){
+        ArrayList<String> properties = new ArrayList<String>();
+        Iterator<Map.Entry<String,DataStructureProperties>> iterator =
+                mapBeans.get(beanId).getProperties().entrySet().iterator();
+
+        while(iterator.hasNext()){
+            Map.Entry<String,DataStructureProperties> set = (Map.Entry<String,DataStructureProperties>) iterator.next();
+            properties.add(set.getKey());
+        }
+        return properties;
     }
 
     public String getCls(String beanId){
