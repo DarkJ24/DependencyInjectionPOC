@@ -33,7 +33,7 @@ public class ScannedClassXML implements ScannedClass {
     private Scope scope;
 
     private AutowiringMode autowiringMode;
-
+    /*
     public ScannedClassXML() {
         this.dependantClasses = new ArrayList<>();
         this.dependencyClasses = new ArrayList<>();
@@ -62,7 +62,7 @@ public class ScannedClassXML implements ScannedClass {
         this.setAutowiringMode(autowiringMode);
         this.setLazyInit(lazyInit);
     }
-
+    */
     @Override
     public Class<?> getType() {
         return this.type;
@@ -190,4 +190,13 @@ public class ScannedClassXML implements ScannedClass {
 
         return this.type.getName();
     }
+
+    public static class ScannedClassBuilder{
+
+        public ScannedClassBuilder() {
+        }
+    }
+
+
+
 }
