@@ -3,7 +3,6 @@ package com.darkj24.ioc.models;
 import com.darkj24.ioc.enums.AutowiringMode;
 import com.darkj24.ioc.enums.Scope;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -19,6 +18,8 @@ public class ScannedClassXML implements ScannedClass {
     private Object instance;
 
     private Method[] beans;
+
+    private Method[] requiredMethods;
 
     private final List<ScannedClass> dependantClasses;
 
@@ -39,19 +40,11 @@ public class ScannedClassXML implements ScannedClass {
         this.dependencyClasses = new ArrayList<>();
     }
 
-    public ScannedClassXML(Class<?> type, Constructor<?> targetConstructor,
-                                  Method[] beans) {
-        this();
-        this.setType(type);
-        this.setTargetConstructor(targetConstructor);
-        this.setBeans(beans);
-    }
-
     public ScannedClassXML(Class<?> type,
                                   Constructor<?> targetConstructor,
                                   Method initMethod, Method destroyMethod,
                                   Scope scope, AutowiringMode autowiringMode, boolean lazyInit,
-                                  Method[] beans) {
+                           Method[] beans) {
         this();
         this.setType(type);
         this.setTargetConstructor(targetConstructor);
@@ -101,6 +94,16 @@ public class ScannedClassXML implements ScannedClass {
     @Override
     public void setBeans(Method[] beans) {
         this.beans = beans;
+    }
+
+    @Override
+    public Method[] getRequiredMethods() {
+        return this.requiredMethods;
+    }
+
+    @Override
+    public void setRequiredMethods(Method[] methods) {
+        this.requiredMethods = methods;
     }
 
     @Override

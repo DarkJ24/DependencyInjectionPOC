@@ -29,6 +29,7 @@ public class HighLevel {
         return lowLevel;
     }
 
+    @Required
     public void setLowLevel(LowLevel lowLevel) {
         this.lowLevel = lowLevel;
     }

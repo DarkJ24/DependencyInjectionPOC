@@ -22,6 +22,8 @@ public class ScannedClassAnnotation implements ScannedClass {
 
     private Method[] beans;
 
+    private Method[] requiredMethods;
+
     private final List<ScannedClass> dependantClasses;
 
     private final List<ScannedClass> dependencyClasses;
@@ -43,19 +45,9 @@ public class ScannedClassAnnotation implements ScannedClass {
 
     public ScannedClassAnnotation(Class<?> type,
                                   Annotation annotation, Constructor<?> targetConstructor,
-                                  Method[] beans) {
-        this();
-        this.setType(type);
-        this.setAnnotation(annotation);
-        this.setTargetConstructor(targetConstructor);
-        this.setBeans(beans);
-    }
-
-    public ScannedClassAnnotation(Class<?> type,
-                                  Annotation annotation, Constructor<?> targetConstructor,
                                   Method initMethod, Method destroyMethod,
                                   Scope scope, AutowiringMode autowiringMode, boolean lazyInit,
-                                  Method[] beans) {
+                                  Method[] beans, Method[] requiredMethods) {
         this();
         this.setType(type);
         this.setAnnotation(annotation);
@@ -66,6 +58,7 @@ public class ScannedClassAnnotation implements ScannedClass {
         this.setScope(scope);
         this.setAutowiringMode(autowiringMode);
         this.setLazyInit(lazyInit);
+        this.setRequiredMethods(requiredMethods);
     }
 
     @Override
@@ -114,6 +107,16 @@ public class ScannedClassAnnotation implements ScannedClass {
     @Override
     public void setBeans(Method[] beans) {
         this.beans = beans;
+    }
+
+    @Override
+    public Method[] getRequiredMethods() {
+        return this.requiredMethods;
+    }
+
+    @Override
+    public void setRequiredMethods(Method[] methods) {
+        this.requiredMethods = methods;
     }
 
     @Override

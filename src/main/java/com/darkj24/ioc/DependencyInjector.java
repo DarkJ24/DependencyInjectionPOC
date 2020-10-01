@@ -6,9 +6,12 @@ import com.darkj24.ioc.enums.DirectoryType;
 import com.darkj24.ioc.models.Directory;
 import com.darkj24.ioc.models.ScannedClass;
 import com.darkj24.ioc.models.ScannedClassAnnotation;
+import com.darkj24.ioc.models.ScannedMethod;
 import com.darkj24.ioc.services.*;
 
+import java.util.Arrays;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class DependencyInjector {
 
@@ -36,7 +39,7 @@ public class DependencyInjector {
             System.out.println(s.getDestroyMethod());
             System.out.println(s.getTargetConstructor());
             System.out.println(s.getAutowiringMode());
-            System.out.println(s.getBeans());
+            System.out.println(Arrays.stream(s.getBeans()).map(ScannedMethod::getName).collect(Collectors.toList()));
         }
     }
 

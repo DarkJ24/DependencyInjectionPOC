@@ -26,6 +26,10 @@ public interface ScannedClass {
 
     public void setBeans(Method[] beans);
 
+    public Method[] getRequiredMethods();
+
+    public void setRequiredMethods(Method[] methods);
+
     public List<ScannedClass> getDependantServices();
 
     public void addDependantService(ScannedClass dependantClasses);

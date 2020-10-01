@@ -4,9 +4,9 @@ import com.darkj24.ioc.annotations.*;
 import com.darkj24.ioc.config.AnnotationsConfiguration;
 import com.darkj24.ioc.enums.AutowiringMode;
 import com.darkj24.ioc.enums.Scope;
-import com.darkj24.ioc.models.Constants;
 import com.darkj24.ioc.models.ScannedClass;
 import com.darkj24.ioc.models.ScannedClassAnnotation;
+import com.darkj24.ioc.models.ScannedMethod;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
@@ -65,7 +65,8 @@ public class ClassScannerAnnotation implements ClassScanner {
                         cls,
                         providerAnnotation,
                         this.findSuitableConstructor(cls),
-                        this.findInitMethod(cls), this.findDestroyMethod(cls), scope, autowiringMode, isLazyInit, this.findBeans(cls)
+                        this.findInitMethod(cls), this.findDestroyMethod(cls), scope, autowiringMode, isLazyInit,
+                        this.findBeans(cls), this.findRequiredMethods(cls)
 
                 );
 
@@ -101,14 +102,26 @@ public class ClassScannerAnnotation implements ClassScanner {
             for (Class<? extends Annotation> beanAnnotation : beanAnnotations) {
                 if (method.isAnnotationPresent(beanAnnotation)) {
                     method.setAccessible(true);
+                    //beanMethods.add(new ScannedMethod.ScannedMethodBuilder(method).setRequired(method.isAnnotationPresent(Required.class)).setBean(true).build());
                     beanMethods.add(method);
-
                     break;
                 }
             }
         }
 
         return beanMethods.toArray(new Method[0]);
+    }
+
+    private Method[] findRequiredMethods(Class<?> cls) {
+        final Set<Method> requiredMethods = new HashSet<>();
+
+        for (Method method : cls.getDeclaredMethods()) {
+            if (method.isAnnotationPresent(Required.class)) {
+                requiredMethods.add(method);
+            }
+        }
+
+        return requiredMethods.toArray(new Method[0]);
     }
 
     private Method findInitMethod(Class<?> cls) {
