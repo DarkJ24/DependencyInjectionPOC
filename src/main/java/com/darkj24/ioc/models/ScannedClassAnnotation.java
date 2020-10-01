@@ -14,9 +14,7 @@ public class ScannedClassAnnotation implements ScannedClass {
 
     private Class<?> type;
 
-    private Annotation annotation;
-
-    private Constructor<?> targetConstructor;
+    private Constructor<?> constructor;
 
     private Object instance;
 
@@ -43,15 +41,13 @@ public class ScannedClassAnnotation implements ScannedClass {
         this.dependencyClasses = new ArrayList<>();
     }
 
-    public ScannedClassAnnotation(Class<?> type,
-                                  Annotation annotation, Constructor<?> targetConstructor,
+    public ScannedClassAnnotation(Class<?> type, Constructor<?> constructor,
                                   Method initMethod, Method destroyMethod,
                                   Scope scope, AutowiringMode autowiringMode, boolean lazyInit,
                                   Method[] beans, Method[] requiredMethods) {
         this();
         this.setType(type);
-        this.setAnnotation(annotation);
-        this.setTargetConstructor(targetConstructor);
+        this.setConstructor(constructor);
         this.setBeans(beans);
         this.setInitMethod(initMethod);
         this.setDestroyMethod(destroyMethod);
@@ -71,22 +67,14 @@ public class ScannedClassAnnotation implements ScannedClass {
         this.type = type;
     }
 
-    public Annotation getAnnotation() {
-        return this.annotation;
-    }
-
-    public void setAnnotation(Annotation annotation) {
-        this.annotation = annotation;
+    @Override
+    public Constructor<?> getConstructor() {
+        return this.constructor;
     }
 
     @Override
-    public Constructor<?> getTargetConstructor() {
-        return this.targetConstructor;
-    }
-
-    @Override
-    public void setTargetConstructor(Constructor<?> targetConstructor) {
-        this.targetConstructor = targetConstructor;
+    public void setConstructor(Constructor<?> constructor) {
+        this.constructor = constructor;
     }
 
     @Override

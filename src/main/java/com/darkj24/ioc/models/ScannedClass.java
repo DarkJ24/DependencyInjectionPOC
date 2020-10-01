@@ -14,9 +14,9 @@ public interface ScannedClass {
 
     public void setType(Class<?> type);
 
-    public Constructor<?> getTargetConstructor();
+    public Constructor<?> getConstructor();
 
-    public void setTargetConstructor(Constructor<?> targetConstructor);
+    public void setConstructor(Constructor<?> constructor);
 
     public Object getInstance();
 

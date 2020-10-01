@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 public class ClassInstantiatorImpl implements ClassInstantiator {
+
     @Override
     public List<ScannedClassAnnotation> instantiateProvidersAndBeans(Set<ScannedClassAnnotation> classes) throws ProviderInstantiationException {
         return null;

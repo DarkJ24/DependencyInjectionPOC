@@ -13,7 +13,7 @@ public class ScannedClassXML implements ScannedClass {
 
     private Class<?> type;
 
-    private Constructor<?> targetConstructor;
+    private Constructor<?> constructor;
 
     private Object instance;
 
@@ -34,28 +34,28 @@ public class ScannedClassXML implements ScannedClass {
     private Scope scope;
 
     private AutowiringMode autowiringMode;
-    /*
+
     public ScannedClassXML() {
         this.dependantClasses = new ArrayList<>();
         this.dependencyClasses = new ArrayList<>();
     }
 
-    public ScannedClassXML(Class<?> type,
-                                  Constructor<?> targetConstructor,
-                                  Method initMethod, Method destroyMethod,
-                                  Scope scope, AutowiringMode autowiringMode, boolean lazyInit,
-                           Method[] beans) {
-        this();
-        this.setType(type);
-        this.setTargetConstructor(targetConstructor);
-        this.setBeans(beans);
-        this.setInitMethod(initMethod);
-        this.setDestroyMethod(destroyMethod);
-        this.setScope(scope);
-        this.setAutowiringMode(autowiringMode);
-        this.setLazyInit(lazyInit);
-    }
-    */
+//    public ScannedClassXML(Class<?> type,
+//                                  Constructor<?> targetConstructor,
+//                                  Method initMethod, Method destroyMethod,
+//                                  Scope scope, AutowiringMode autowiringMode, boolean lazyInit,
+//                           Method[] beans) {
+//        this();
+//        this.setType(type);
+//        this.setTargetConstructor(targetConstructor);
+//        this.setBeans(beans);
+//        this.setInitMethod(initMethod);
+//        this.setDestroyMethod(destroyMethod);
+//        this.setScope(scope);
+//        this.setAutowiringMode(autowiringMode);
+//        this.setLazyInit(lazyInit);
+//    }
+
     @Override
     public Class<?> getType() {
         return this.type;
@@ -67,13 +67,13 @@ public class ScannedClassXML implements ScannedClass {
     }
 
     @Override
-    public Constructor<?> getTargetConstructor() {
-        return this.targetConstructor;
+    public Constructor<?> getConstructor() {
+        return this.constructor;
     }
 
     @Override
-    public void setTargetConstructor(Constructor<?> targetConstructor) {
-        this.targetConstructor = targetConstructor;
+    public void setConstructor(Constructor<?> constructor) {
+        this.constructor = constructor;
     }
 
     @Override
