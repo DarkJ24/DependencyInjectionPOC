@@ -64,6 +64,10 @@ public class DataStructureBean {
         return properties.get(name).getRef();
     }
 
+    public Map<String, DataStructureProperties> getProperties() {
+        return properties;
+    }
+
     public static class BeanBuilder{
         private String cls;
         private String scope;
