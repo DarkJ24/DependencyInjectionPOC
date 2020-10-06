@@ -1,11 +1,12 @@
 package com.darkj24.ioc.services;
 
 import com.darkj24.ioc.models.ScannedClass;
-import com.darkj24.ioc.models.ScannedClassAnnotation;
+import com.darkj24.ioc.models.ScannedClassXML;
 import com.xml.XmlParser;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class ClassScannerXML implements ClassScanner{
@@ -18,7 +19,7 @@ public class ClassScannerXML implements ClassScanner{
         this.xmlFile = new XmlParser(filePath);
     }
 
-    public Set<ScannedClass> scanClasses() {
+    public Set<ScannedClassXML> scanClasses() {
         Set<Class<?>> locatedClasses = new HashSet<>();;
         ArrayList<String> classes = xmlFile.getAllCls();
         try {
@@ -32,10 +33,31 @@ public class ClassScannerXML implements ClassScanner{
     }
 
     @Override
-    public Set<ScannedClass> scanClasses(Set<Class<?>> locatedClasses) {
+    public Set<ScannedClassXML> scanClasses(Set<Class<?>> locatedClasses) {
+        // ojo, el locatedClasses no se esta usando por el momento
+        Set<ScannedClassXML> scannedClassXML = new HashSet<>();
+        List<String> beanIds = xmlFile.getAllBeanID();
 
-        final Set<ScannedClassAnnotation> scannedClassXML = new HashSet<>();
+        for(String bean:beanIds){
+            List<String> properties = xmlFile.getAllPropertiesFromBeanId(bean);
+            try {
+                ScannedClassXML scannedClass = new ScannedClassXML.ScannedClassBuilder(Class.forName(xmlFile.getCls(bean)))
+                        .addConstructor()
+                        .addMethods()
+                        .addMDependantClasses()
+                        .addMDependencyClasses()
+                        .addInitMethod()
+                        .addDestroyMethod()
+                        .addScope()
+                        .addSAutowiringMode()
+                        .build();
 
-        return null;
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        return scannedClassXML;
     }
 }
