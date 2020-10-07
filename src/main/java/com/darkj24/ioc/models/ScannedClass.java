@@ -5,7 +5,6 @@ import com.darkj24.ioc.enums.Scope;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-import java.util.Collections;
 import java.util.List;
 
 public interface ScannedClass {

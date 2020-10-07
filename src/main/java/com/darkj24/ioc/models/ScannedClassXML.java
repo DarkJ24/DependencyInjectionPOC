@@ -6,7 +6,6 @@ import com.sun.istack.internal.Nullable;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -38,7 +37,7 @@ public class ScannedClassXML implements ScannedClass {
 
     private ScannedClassXML(ScannedClassBuilder builder) {
         this.type = builder.type;
-        this.targetConstructor = builder.targetConstructor;
+        this.constructor = builder.constructor;
         this.beans = builder.beans;
         this.dependantClasses = builder.dependantClasses;
         this.dependencyClasses = builder.dependencyClasses;
@@ -190,7 +189,7 @@ public class ScannedClassXML implements ScannedClass {
     public static class ScannedClassBuilder{
 
         private Class<?> type;
-        private Constructor<?> targetConstructor;
+        private Constructor<?> constructor;
         private Object instance; // No se agrega con el builder
         private Method[] beans;
         private List<ScannedClass> dependantClasses;
@@ -205,9 +204,9 @@ public class ScannedClassXML implements ScannedClass {
             this.type=type;
         }
 
-        public ScannedClassBuilder addConstructor (@Nullable Constructor<?> targetConstructor){
-            if(targetConstructor != null) {
-                this.targetConstructor = targetConstructor;
+        public ScannedClassBuilder addConstructor (@Nullable Constructor<?> constructor){
+            if(constructor != null) {
+                this.constructor = constructor;
             }
             return this;
         }

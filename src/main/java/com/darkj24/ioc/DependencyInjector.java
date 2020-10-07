@@ -4,8 +4,6 @@ import com.app.MainApplication;
 import com.darkj24.ioc.enums.DirectoryType;
 import com.darkj24.ioc.models.Directory;
 import com.darkj24.ioc.models.ScannedClass;
-import com.darkj24.ioc.models.ScannedClassAnnotation;
-import com.darkj24.ioc.models.ScannedClassXML;
 import com.darkj24.ioc.services.*;
 
 import java.lang.reflect.Method;
@@ -26,7 +24,7 @@ public class DependencyInjector {
         Set<Class<?>> locatedClasses = classLocator.locateClasses(directory.getName());
         Set<ScannedClass> scannedClassAnnotations = classScanner.scanClasses(locatedClasses);
         //System.out.println(scannedClassAnnotations);
-        System.out.println("****CONFIGURACION ANNOTATION****");
+        System.out.println("****CONFIGURACIÓN ANNOTATION****");
         for (ScannedClass s : scannedClassAnnotations) {
             System.out.println(s.getType());
             System.out.println(s.getScope());
@@ -37,16 +35,16 @@ public class DependencyInjector {
             System.out.println(Arrays.stream(s.getBeans()).map(Method::getName).collect(Collectors.toList()));
         }
 
-        Set<ScannedClass> scannedClassXML = new ClassScannerXML("C:\\Users\\luisc\\Desktop\\UCR\\Patrones\\TareaProgramada1\\xml\\ejemplo2.xml")
+        Set<ScannedClass> scannedClassXML = new ClassScannerXML("src/main/resources/context.xml")
                 .scanClasses();
-        System.out.println("****CONFIGURACION XML****");
+        System.out.println("****CONFIGURACIÓN XML****");
         for (ScannedClass s2 : scannedClassXML) {
             System.out.println(s2.getType());
             System.out.println(s2.getScope());
-            System.out.println(s2.getTargetConstructor());
+            System.out.println(s2.getConstructor());
             System.out.println(s2.getInitMethod());
             System.out.println(s2.getDestroyMethod());
-            System.out.println(s2.getTargetConstructor());
+            System.out.println(s2.getConstructor());
             System.out.println(s2.getAutowiringMode());
             System.out.println(s2.getBeans());
         }

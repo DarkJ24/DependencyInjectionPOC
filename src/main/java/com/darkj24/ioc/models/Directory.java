@@ -1,7 +1,5 @@
 package com.darkj24.ioc.models;
 
-import com.darkj24.ioc.annotations.Bean;
-import com.darkj24.ioc.annotations.Provider;
 import com.darkj24.ioc.enums.DirectoryType;
 
 public class Directory {
