@@ -7,14 +7,12 @@ import com.darkj24.ioc.models.ScannedClassXML;
 import com.xml.XmlParser;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.darkj24.ioc.models.Constants.*;
 
-public class ClassScannerXML{
+public class ClassScannerXML implements ClassScanner{
 
     private String filePath;
     private XmlParser xmlFile;
@@ -24,7 +22,7 @@ public class ClassScannerXML{
         this.xmlFile = new XmlParser(this.filePath);
     }
 
-    public Set<ScannedClassXML> scanClasses() {
+    public Set<ScannedClass> scanClasses() {
         Set<Class<?>> locatedClasses = new HashSet<>();;
         ArrayList<String> classes = xmlFile.getAllCls();
         try {
@@ -37,7 +35,7 @@ public class ClassScannerXML{
         return scanClasses(locatedClasses);
     }
 
-    public Set<ScannedClassXML> scanClasses(Set<Class<?>> locatedClasses) {
+    public Set<ScannedClass> scanClasses(Set<Class<?>> locatedClasses) {
         // ojo, el locatedClasses no se esta usando por el momento
         Set<ScannedClassXML> scannedClassesXML = new HashSet<ScannedClassXML>();
         List<String> beanIds = xmlFile.getAllBeanID();
@@ -63,7 +61,7 @@ public class ClassScannerXML{
             }
 
         }
-        return scannedClassesXML;
+        return scannedClassesXML.stream().collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
     private Scope findScope(String xmlScope){

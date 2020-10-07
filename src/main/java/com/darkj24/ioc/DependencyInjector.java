@@ -41,7 +41,7 @@ public class DependencyInjector {
             System.out.println(s.getBeans());
         }
 
-        Set<ScannedClassXML> scannedClassXML = new ClassScannerXML("C:\\Users\\luisc\\Desktop\\UCR\\Patrones\\TareaProgramada1\\xml\\ejemplo2.xml")
+        Set<ScannedClass> scannedClassXML = new ClassScannerXML("C:\\Users\\luisc\\Desktop\\UCR\\Patrones\\TareaProgramada1\\xml\\ejemplo2.xml")
                 .scanClasses();
         System.out.println("****CONFIGURACION XML****");
         for (ScannedClass s2 : scannedClassXML) {
