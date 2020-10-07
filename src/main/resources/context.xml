@@ -1,0 +1,18 @@
+<beans>
+<bean 
+  id="lowLevelBean"
+  class="com.app.LowLevel" />
+     
+<bean 
+  id="highLevelBean" 
+  scope="singleton"
+  constructorArg=""
+  autowiringMode="no"
+  lazyInit="true"
+  initMethod="init"
+  destroyMethod="destroy"  
+  class="com.app.HighLevel" >
+    <property name="lowLevel" ref="lowLevelBean" />
+    <property name="lowLevel2" ref="lowLevelBean" />
+</bean>
+</beans>
