@@ -2,6 +2,7 @@ package com.darkj24.ioc.models;
 
 import com.darkj24.ioc.enums.AutowiringMode;
 import com.darkj24.ioc.enums.Scope;
+import com.sun.istack.internal.Nullable;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
@@ -193,48 +194,64 @@ public class ScannedClassXML implements ScannedClass {
             this.type=type;
         }
 
-        public ScannedClassBuilder addConstructor (Constructor<?> targetConstructor){
-            this.targetConstructor=targetConstructor;
+        public ScannedClassBuilder addConstructor (@Nullable Constructor<?> targetConstructor){
+            if(targetConstructor != null) {
+                this.targetConstructor = targetConstructor;
+            }
             return this;
         }
 
-        public ScannedClassBuilder addMethods (Method[] beans){
-            this.beans=beans;
+        public ScannedClassBuilder addMethods (@Nullable Method[] beans){
+            if(beans != null) {
+                this.beans = beans;
+            }
             return this;
         }
 
-        public ScannedClassBuilder addMDependantClasses (List<ScannedClass> dependantClasses){
-            this.dependantClasses=dependantClasses;
+        public ScannedClassBuilder addDependantClasses (@Nullable List<ScannedClass> dependantClasses){
+            if(dependantClasses != null) {
+                this.dependantClasses = dependantClasses;
+            }
             return this;
         }
 
-        public ScannedClassBuilder addMDependencyClasses (List<ScannedClass> dependencyClasses){
-            this.dependencyClasses=dependencyClasses;
+        public ScannedClassBuilder addDependencyClasses (@Nullable List<ScannedClass> dependencyClasses){
+            if(dependencyClasses != null) {
+                this.dependencyClasses=dependencyClasses;
+            }
             return this;
         }
 
-        public ScannedClassBuilder addLazyInit(boolean lazyInit){
-            this.lazyInit=lazyInit;
+        public ScannedClassBuilder addLazyInit(@Nullable boolean lazyInit){
+            this.lazyInit = lazyInit;
             return this;
         }
 
-        public ScannedClassBuilder addInitMethod(Method initMethod){
-            this.initMethod=initMethod;
+        public ScannedClassBuilder addInitMethod(@Nullable Method initMethod){
+            if(initMethod != null) {
+                this.initMethod = initMethod;
+            }
             return this;
         }
 
-        public ScannedClassBuilder addDestroyMethod(Method destroyMethod){
-            this.destroyMethod=destroyMethod;
+        public ScannedClassBuilder addDestroyMethod(@Nullable Method destroyMethod){
+            if(destroyMethod != null) {
+                this.destroyMethod = destroyMethod;
+            }
             return this;
         }
 
-        public ScannedClassBuilder addScope(Scope scope){
-            this.scope=scope;
+        public ScannedClassBuilder addScope(@Nullable Scope scope){
+            if(scope != null) {
+                this.scope = scope;
+            }
             return this;
         }
 
-        public ScannedClassBuilder addSAutowiringMode(AutowiringMode autowiringMode){
-            this.autowiringMode=autowiringMode;
+        public ScannedClassBuilder addAutowiringMode(@Nullable AutowiringMode autowiringMode){
+            if(autowiringMode != null) {
+                this.autowiringMode = autowiringMode;
+            }
             return this;
         }
 
