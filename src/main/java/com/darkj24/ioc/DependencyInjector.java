@@ -25,30 +25,31 @@ public class DependencyInjector {
         Set<ScannedClass> scannedClassAnnotations = classScanner.scanClasses(locatedClasses);
         //System.out.println(scannedClassAnnotations);
         System.out.println("****CONFIGURACIÓN ANNOTATION****");
-        for (ScannedClass s : scannedClassAnnotations) {
-            System.out.println(s.getType());
-            System.out.println(s.getScope());
-            System.out.println(s.getConstructor());
-            System.out.println(s.getInitMethod());
-            System.out.println(s.getDestroyMethod());
-            System.out.println(s.getAutowiringMode());
-            System.out.println(Arrays.stream(s.getBeans()).map(Method::getName).collect(Collectors.toList()));
-        }
+        printScannedClassesDetail(scannedClassAnnotations);
 
         Set<ScannedClass> scannedClassXML = new ClassScannerXML("src/main/resources/context.xml")
                 .scanClasses();
         System.out.println("****CONFIGURACIÓN XML****");
-        for (ScannedClass s2 : scannedClassXML) {
+        printScannedClassesDetail(scannedClassXML);
+
+        ClassScannerMerger classMerger = new ClassScannerMerger();
+        Set<ScannedClass> finalClasses = classMerger.mergeClasses(scannedClassAnnotations, scannedClassXML);
+        System.out.println("****CONFIGURACIÓN GLOBAL****");
+        printScannedClassesDetail(finalClasses);
+
+    }
+
+    private static void printScannedClassesDetail(Set<ScannedClass> classes){
+        for (ScannedClass s2 : classes) {
             System.out.println(s2.getType());
             System.out.println(s2.getScope());
             System.out.println(s2.getConstructor());
             System.out.println(s2.getInitMethod());
             System.out.println(s2.getDestroyMethod());
-            System.out.println(s2.getConstructor());
             System.out.println(s2.getAutowiringMode());
-            System.out.println(s2.getBeans());
+            //System.out.println(s2.getBeans());
+            System.out.println(Arrays.stream(s2.getBeans()).map(Method::getName).collect(Collectors.toList()));
         }
-
     }
 
     public static void main(String[] args) {

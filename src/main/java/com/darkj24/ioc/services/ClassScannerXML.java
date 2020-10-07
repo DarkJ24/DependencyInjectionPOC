@@ -1,5 +1,6 @@
 package com.darkj24.ioc.services;
 
+import com.darkj24.ioc.annotations.Autowired;
 import com.darkj24.ioc.enums.AutowiringMode;
 import com.darkj24.ioc.enums.Scope;
 import com.darkj24.ioc.models.ScannedClass;
@@ -46,9 +47,9 @@ public class ClassScannerXML implements ClassScanner{
                 Class cls = Class.forName(xmlFile.getCls(bean));
                 ScannedClassXML scannedClass = new ScannedClassXML.ScannedClassBuilder(cls)
                         .addConstructor(null)
-                        .addMethods(null)
-                        .addDependantClasses(null)
-                        .addDependencyClasses(null)
+                        .addMethods(new Method[0])
+                        .addDependantClasses(new ArrayList<>())
+                        .addDependencyClasses(new ArrayList<>())
                         .addLazyInit(xmlFile.getLazyInit(bean))
                         .addInitMethod(findMethod(cls, xmlFile.getInitMethod(bean)))
                         .addDestroyMethod(findMethod(cls, xmlFile.getDestroyMethod(bean)))

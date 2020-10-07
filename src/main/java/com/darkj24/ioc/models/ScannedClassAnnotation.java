@@ -1,7 +1,9 @@
 package com.darkj24.ioc.models;
 
 import com.darkj24.ioc.enums.AutowiringMode;
+import com.darkj24.ioc.enums.ScannedClassType;
 import com.darkj24.ioc.enums.Scope;
+import com.darkj24.ioc.services.ListMerger;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -21,9 +23,9 @@ public class ScannedClassAnnotation implements ScannedClass {
 
     private Method[] requiredMethods;
 
-    private final List<ScannedClass> dependantClasses;
+    private List<ScannedClass> dependantClasses;
 
-    private final List<ScannedClass> dependencyClasses;
+    private List<ScannedClass> dependencyClasses;
 
     private boolean lazyInit = false;
 
@@ -35,9 +37,12 @@ public class ScannedClassAnnotation implements ScannedClass {
 
     private AutowiringMode autowiringMode;
 
+    private ScannedClassType scanType;
+
     public ScannedClassAnnotation() {
         this.dependantClasses = new ArrayList<>();
         this.dependencyClasses = new ArrayList<>();
+        this.scanType = ScannedClassType.ANNOTATION;
     }
 
     public ScannedClassAnnotation(Class<?> type, Constructor<?> constructor,
@@ -177,6 +182,11 @@ public class ScannedClassAnnotation implements ScannedClass {
     }
 
     @Override
+    public ScannedClassType getScanType() {
+        return this.scanType;
+    }
+
+    @Override
     public int hashCode() {
         if (this.type == null) {
             return super.hashCode();
@@ -193,4 +203,30 @@ public class ScannedClassAnnotation implements ScannedClass {
 
         return this.type.getName();
     }
+
+    @Override
+    public ScannedClass merge(ScannedClass secondClass) {
+        this.scanType = ScannedClassType.BOTH;
+        this.constructor = this.constructor == null ? secondClass.getConstructor() : this.constructor;
+        //beans
+        ListMerger<Method> methodMerger = new ListMerger<>();
+        List<Method> newBeans = methodMerger.mergeLists(this.beans,secondClass.getBeans());
+        this.beans = newBeans.toArray(new Method[0]);
+        //requiredMethods
+        this.constructor = this.constructor == null ? secondClass.getConstructor() : this.constructor;
+        List<Method> newRequiredMethods = methodMerger.mergeLists(this.requiredMethods,secondClass.getRequiredMethods());
+        this.requiredMethods = newRequiredMethods.toArray(new Method[0]);
+        //dependantClasses
+        ListMerger<ScannedClass> sClassMerger = new ListMerger<>();
+        this.dependantClasses = sClassMerger.mergeLists(this.dependantClasses,secondClass.getDependantServices());
+        //dependencyClasses
+        this.dependencyClasses = sClassMerger.mergeLists(this.dependencyClasses,secondClass.getDependencyServices());
+        this.lazyInit = this.lazyInit || secondClass.isLazyInit();
+        this.initMethod = this.initMethod != null ? this.initMethod : secondClass.getInitMethod();
+        this.scope = this.scope == Scope.PROTOTYPE ? this.scope : secondClass.getScope();
+        this.autowiringMode = this.autowiringMode != AutowiringMode.NO ? this.autowiringMode : secondClass.getAutowiringMode();
+
+        return this;
+    }
+
 }

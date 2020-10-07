@@ -1,6 +1,7 @@
 package com.darkj24.ioc.models;
 
 import com.darkj24.ioc.enums.AutowiringMode;
+import com.darkj24.ioc.enums.ScannedClassType;
 import com.darkj24.ioc.enums.Scope;
 import com.sun.istack.internal.Nullable;
 
@@ -19,7 +20,7 @@ public class ScannedClassXML implements ScannedClass {
 
     private Method[] beans;
 
-    private Method[] requiredMethods;
+    private Method[] requiredMethods = new Method[0];
 
     private final List<ScannedClass> dependantClasses;
 
@@ -35,6 +36,8 @@ public class ScannedClassXML implements ScannedClass {
 
     private AutowiringMode autowiringMode;
 
+    private ScannedClassType scanType;
+
     private ScannedClassXML(ScannedClassBuilder builder) {
         this.type = builder.type;
         this.constructor = builder.constructor;
@@ -46,6 +49,7 @@ public class ScannedClassXML implements ScannedClass {
         this.destroyMethod = builder.destroyMethod;
         this.scope = builder.scope;
         this.autowiringMode = builder.autowiringMode;
+        this.scanType = ScannedClassType.XML;
     }
   
     @Override
@@ -166,6 +170,16 @@ public class ScannedClassXML implements ScannedClass {
     @Override
     public void setAutowiringMode(AutowiringMode autowiringMode) {
         this.autowiringMode = autowiringMode;
+    }
+
+    @Override
+    public ScannedClass merge(ScannedClass secondClass) {
+        return secondClass.merge(this);
+    }
+
+    @Override
+    public ScannedClassType getScanType() {
+        return this.scanType;
     }
 
     @Override

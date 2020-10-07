@@ -1,6 +1,7 @@
 package com.darkj24.ioc.models;
 
 import com.darkj24.ioc.enums.AutowiringMode;
+import com.darkj24.ioc.enums.ScannedClassType;
 import com.darkj24.ioc.enums.Scope;
 
 import java.lang.reflect.Constructor;
@@ -8,6 +9,10 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 public interface ScannedClass {
+
+    public ScannedClass merge(ScannedClass secondClass);
+
+    public ScannedClassType getScanType();
 
     public Class<?> getType();
 
