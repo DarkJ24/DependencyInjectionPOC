@@ -20,4 +20,10 @@ public class Constants {
     public static final String TAG_PROPERTY_NAME = "name";
     public static final String TAG_PROPERTY_VALUE = "value";
     public static final String TAG_PROPERTY_REF = "ref";
+
+    public static final String ATTR_SINGLETON = "Singleton";
+    public static final String ATTR_PROTOTYPE = "Prototype";
+    public static final String ATTR_BY_NAME = "byName";
+    public static final String ATTR_BY_TYPE = "byType";
+
 }

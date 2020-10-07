@@ -20,18 +20,18 @@ import static com.darkj24.ioc.models.Constants.*;
 
 public class XmlParser {
 
-    private String FILE_PATH = "context.xml";
+    private String filePath = "context.xml";
     private Map<String, DataStructureBean> mapBeans = new HashMap<String, DataStructureBean>();
+    private File inputFile;
 
-    public XmlParser(String FILE_PATH) {
-        this.FILE_PATH = FILE_PATH;
-    }
+    public XmlParser(String filePath) {
+        this.filePath = filePath;
+        this.inputFile = new File(this.filePath);
 
-    File inputFile = new File(FILE_PATH);
-    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-    DocumentBuilder builder;
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder;
 
-    {
+
         try {
             builder = factory.newDocumentBuilder();
             Document doc = builder.parse(inputFile);
