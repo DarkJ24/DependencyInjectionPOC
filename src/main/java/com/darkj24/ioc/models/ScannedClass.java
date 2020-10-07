@@ -14,9 +14,9 @@ public interface ScannedClass {
 
     public void setType(Class<?> type);
 
-    public Constructor<?> getTargetConstructor();
+    public Constructor<?> getConstructor();
 
-    public void setTargetConstructor(Constructor<?> targetConstructor);
+    public void setConstructor(Constructor<?> constructor);
 
     public Object getInstance();
 
@@ -25,6 +25,10 @@ public interface ScannedClass {
     public Method[] getBeans();
 
     public void setBeans(Method[] beans);
+
+    public Method[] getRequiredMethods();
+
+    public void setRequiredMethods(Method[] methods);
 
     public List<ScannedClass> getDependantServices();
 

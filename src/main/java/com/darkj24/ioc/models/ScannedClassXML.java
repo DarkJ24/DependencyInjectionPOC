@@ -4,7 +4,6 @@ import com.darkj24.ioc.enums.AutowiringMode;
 import com.darkj24.ioc.enums.Scope;
 import com.sun.istack.internal.Nullable;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -15,11 +14,13 @@ public class ScannedClassXML implements ScannedClass {
 
     private Class<?> type;
 
-    private Constructor<?> targetConstructor;
+    private Constructor<?> constructor;
 
     private Object instance;
 
     private Method[] beans;
+
+    private Method[] requiredMethods;
 
     private final List<ScannedClass> dependantClasses;
 
@@ -47,7 +48,7 @@ public class ScannedClassXML implements ScannedClass {
         this.scope = builder.scope;
         this.autowiringMode = builder.autowiringMode;
     }
-
+  
     @Override
     public Class<?> getType() {
         return this.type;
@@ -59,13 +60,13 @@ public class ScannedClassXML implements ScannedClass {
     }
 
     @Override
-    public Constructor<?> getTargetConstructor() {
-        return this.targetConstructor;
+    public Constructor<?> getConstructor() {
+        return this.constructor;
     }
 
     @Override
-    public void setTargetConstructor(Constructor<?> targetConstructor) {
-        this.targetConstructor = targetConstructor;
+    public void setConstructor(Constructor<?> constructor) {
+        this.constructor = constructor;
     }
 
     @Override
@@ -86,6 +87,16 @@ public class ScannedClassXML implements ScannedClass {
     @Override
     public void setBeans(Method[] beans) {
         this.beans = beans;
+    }
+
+    @Override
+    public Method[] getRequiredMethods() {
+        return this.requiredMethods;
+    }
+
+    @Override
+    public void setRequiredMethods(Method[] methods) {
+        this.requiredMethods = methods;
     }
 
     @Override
