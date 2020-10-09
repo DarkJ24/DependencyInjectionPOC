@@ -1,17 +1,19 @@
 package com.xml;
 
+import com.sun.istack.internal.Nullable;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class DataStructureBean {
-    private String cls = null;
-    private String scope = null;
-    private String constructorArg = null;
-    private String autowiringMode = "no";
-    private boolean lazyInit = false;
-    private String initMethod = "init";
-    private String destroyMethod = "destroy";
-    private Map<String, DataStructureProperties> properties = new HashMap<String,DataStructureProperties>(); //HashMap para almacenar varias dependencias
+    private String cls;
+    private String scope;
+    private String constructorArg;
+    private String autowiringMode;
+    private boolean lazyInit;
+    private String initMethod;
+    private String destroyMethod;
+    private Map<String, DataStructureProperties> properties = new HashMap<String,DataStructureProperties>();
 
     private DataStructureBean(BeanBuilder builder) {
         this.cls = builder.cls;
@@ -70,29 +72,35 @@ public class DataStructureBean {
 
     public static class BeanBuilder{
         private String cls;
-        private String scope;
-        private String constructorArg;
-        private String autowiringMode;
-        private boolean lazyInit;
-        private String initMethod;
-        private String destroyMethod;
+        private String scope = "Singleton";
+        private String constructorArg = "0";
+        private String autowiringMode = "No";
+        private boolean lazyInit = false;
+        private String initMethod = "";
+        private String destroyMethod = "";
 
         public BeanBuilder(String cls){
             this.cls=cls;
         }
 
-        public BeanBuilder addScope(String scope){
-            this.scope=scope;
+        public BeanBuilder addScope(@Nullable String scope){
+            if(scope != null && !scope.isEmpty()) {
+                this.scope = scope;
+            }
             return this;
         }
 
-        public BeanBuilder addConstructorArg(String constructorArg){
-            this.constructorArg=constructorArg;
+        public BeanBuilder addConstructorArg(@Nullable String constructorArg){
+            if(constructorArg != null && !constructorArg.isEmpty()) {
+                this.constructorArg = constructorArg;
+            }
             return this;
         }
 
-        public BeanBuilder addAutowiringMode(String autowiringMode){
-            this.autowiringMode=autowiringMode;
+        public BeanBuilder addAutowiringMode(@Nullable String autowiringMode){
+            if(autowiringMode != null && !autowiringMode.isEmpty()) {
+                this.autowiringMode = autowiringMode;
+            }
             return this;
         }
 
@@ -101,12 +109,16 @@ public class DataStructureBean {
             return this;
         }
 
-        public BeanBuilder addInitMethod(String initMethod){
-            this.initMethod=initMethod;
+        public BeanBuilder addInitMethod(@Nullable String initMethod){
+            if(initMethod != null && !initMethod.isEmpty()) {
+                this.initMethod = initMethod;
+            }
             return this;
         }
-        public BeanBuilder addDestroyMethod(String destroyMethod){
-            this.destroyMethod=destroyMethod;
+        public BeanBuilder addDestroyMethod(@Nullable String destroyMethod){
+            if(destroyMethod != null && !destroyMethod.isEmpty()) {
+                this.destroyMethod = destroyMethod;
+            }
             return this;
         }
 

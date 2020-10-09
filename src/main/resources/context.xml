@@ -6,7 +6,7 @@
 <bean 
   id="highLevelBean" 
   scope="singleton"
-  constructorArg=""
+  constructorArg="0"
   autowiringMode="no"
   lazyInit="true"
   initMethod="init"

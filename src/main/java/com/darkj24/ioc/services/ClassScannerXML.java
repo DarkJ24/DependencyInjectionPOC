@@ -7,6 +7,7 @@ import com.darkj24.ioc.models.ScannedClass;
 import com.darkj24.ioc.models.ScannedClassXML;
 import com.xml.XmlParser;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -46,8 +47,8 @@ public class ClassScannerXML implements ClassScanner{
             try {
                 Class cls = Class.forName(xmlFile.getCls(bean));
                 ScannedClassXML scannedClass = new ScannedClassXML.ScannedClassBuilder(cls)
-                        .addConstructor(null)
-                        .addMethods(new Method[0])
+                        .addConstructor(findConstructor(cls, xmlFile.getConstructorArg(bean)))
+                        .addMethods(getMethods(cls))
                         .addDependantClasses(new ArrayList<>())
                         .addDependencyClasses(new ArrayList<>())
                         .addLazyInit(xmlFile.getLazyInit(bean))
@@ -90,6 +91,19 @@ public class ClassScannerXML implements ClassScanner{
             }
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
+        }
+        return null;
+    }
+
+    private Method[] getMethods(Class<?> cls){
+        return cls.getDeclaredMethods();
+    }
+
+    private Constructor<?> findConstructor (Class<?> cls, String constructorArg){
+        for (Constructor ctr: cls.getDeclaredConstructors()){
+            if(ctr.getParameterCount()==Integer.parseInt(constructorArg)){
+                return ctr;
+            }
         }
         return null;
     }

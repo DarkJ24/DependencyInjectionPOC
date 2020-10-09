@@ -31,7 +31,6 @@ public class XmlParser {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder;
 
-
         try {
             builder = factory.newDocumentBuilder();
             Document doc = builder.parse(inputFile);
