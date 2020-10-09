@@ -47,7 +47,7 @@ public class ClassScannerXML implements ClassScanner{
             try {
                 Class cls = Class.forName(xmlFile.getCls(bean));
                 ScannedClassXML scannedClass = new ScannedClassXML.ScannedClassBuilder(cls)
-                        .addConstructor(findConstructor(cls, xmlFile.getConstructorArg(bean)))
+                        //.addConstructor(findConstructor(null)
                         .addMethods(getMethods(cls))
                         .addDependantClasses(new ArrayList<>())
                         .addDependencyClasses(new ArrayList<>())

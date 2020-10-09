@@ -12,6 +12,8 @@
   initMethod="init"
   destroyMethod="destroy"  
   class="com.app.HighLevel" >
+    <constructorArg index="0" value="v4" ref="hola1"/>
+    <constructorArg index="1" value="2" ref="hola2"/>
     <property name="lowLevel" ref="lowLevelBean" />
     <property name="lowLevel2" ref="lowLevelBean" />
 </bean>
