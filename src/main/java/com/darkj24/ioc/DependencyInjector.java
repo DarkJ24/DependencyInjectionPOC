@@ -3,6 +3,7 @@ package com.darkj24.ioc;
 import com.app.MainApplication;
 import com.darkj24.ioc.enums.DirectoryType;
 import com.darkj24.ioc.models.Directory;
+import com.darkj24.ioc.models.InstantiatedClasses;
 import com.darkj24.ioc.models.ScannedClass;
 import com.darkj24.ioc.services.*;
 
@@ -10,6 +11,8 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static com.darkj24.ioc.services.InstanceCreator.createInstance;
 
 public class DependencyInjector {
 
@@ -36,7 +39,10 @@ public class DependencyInjector {
         Set<ScannedClass> finalClasses = classMerger.mergeClasses(scannedClassAnnotations, scannedClassXML);
         System.out.println("****CONFIGURACIÓN GLOBAL****");
         printScannedClassesDetail(finalClasses);
-
+        for(ScannedClass s3: finalClasses) {
+            createInstance(s3);
+            System.out.println(InstantiatedClasses.instantiatedClasses.size());
+        }
     }
 
     private static void printScannedClassesDetail(Set<ScannedClass> classes){
@@ -47,10 +53,13 @@ public class DependencyInjector {
             System.out.println(s2.getInitMethod());
             System.out.println(s2.getDestroyMethod());
             System.out.println(s2.getAutowiringMode());
+            System.out.println("Dependant Services: "+s2.getDependantServices());
+            System.out.println("Dependency Services: "+s2.getDependencyServices());
             //System.out.println(s2.getBeans());
             System.out.println(Arrays.stream(s2.getBeans()).map(Method::getName).collect(Collectors.toList()));
         }
     }
+
 
     public static void main(String[] args) {
         run(MainApplication.class);

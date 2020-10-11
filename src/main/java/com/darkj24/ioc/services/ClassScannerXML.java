@@ -43,12 +43,11 @@ public class ClassScannerXML implements ClassScanner{
         List<String> beanIds = xmlFile.getAllBeanID();
 
         for(String bean:beanIds){
-            List<String> properties = xmlFile.getAllPropertiesFromBeanId(bean);
             try {
                 Class cls = Class.forName(xmlFile.getCls(bean));
                 ScannedClassXML scannedClass = new ScannedClassXML.ScannedClassBuilder(cls)
                         //.addConstructor(findConstructor(null)
-                        .addMethods(getMethods(cls))
+                        .addMethods(new Method[0]) //No necesario en configuración XML
                         .addDependantClasses(new ArrayList<>())
                         .addDependencyClasses(new ArrayList<>())
                         .addLazyInit(xmlFile.getLazyInit(bean))
@@ -61,7 +60,12 @@ public class ClassScannerXML implements ClassScanner{
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
-
+        }
+        //Add Dependant and Dependency Classes
+        try {
+            addDependantClasses(scannedClassesXML, beanIds);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
         return scannedClassesXML.stream().collect(Collectors.toCollection(LinkedHashSet::new));
     }
@@ -95,10 +99,6 @@ public class ClassScannerXML implements ClassScanner{
         return null;
     }
 
-    private Method[] getMethods(Class<?> cls){
-        return cls.getDeclaredMethods();
-    }
-
     private Constructor<?> findConstructor (Class<?> cls, String constructorArg){
         for (Constructor ctr: cls.getDeclaredConstructors()){
             if(ctr.getParameterCount()==Integer.parseInt(constructorArg)){
@@ -106,5 +106,32 @@ public class ClassScannerXML implements ClassScanner{
             }
         }
         return null;
+    }
+
+    private void addDependantClasses(Set<ScannedClassXML> scannedClassesXML,List<String> beanIds) throws ClassNotFoundException {
+        for(ScannedClassXML primaryCls: scannedClassesXML){
+            for(ScannedClassXML secondaryCls: scannedClassesXML){
+                if(!primaryCls.equals(secondaryCls)){
+                    List<String> properties = null;
+                    for(String bean: beanIds){
+                        if(xmlFile.getCls(bean).equals(primaryCls.getType().toString().
+                                replace("class ",""))){
+                            properties = xmlFile.getAllPropertiesFromBeanId(bean);
+                        }
+                    }
+                    for (String propertyRef: properties) {
+                        String propertyCls = xmlFile.getCls(propertyRef);
+                        if(propertyCls.equals(secondaryCls.getType().toString().replace("class ",""))){
+                            if(!primaryCls.getDependencyServices().contains(secondaryCls)){
+                                primaryCls.addDependencyServices(secondaryCls);
+                            }
+                            if(!secondaryCls.getDependantServices().contains(primaryCls)){
+                                secondaryCls.addDependantService(primaryCls);
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

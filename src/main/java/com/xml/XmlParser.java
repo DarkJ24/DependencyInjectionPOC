@@ -73,7 +73,6 @@ public class XmlParser {
 
     public void addArguments(Element element, DataStructureBean bean, String id){
         if(element.getElementsByTagName(id).getLength() != 0) {
-
             for (int j = 0; j < element.getElementsByTagName(id).getLength(); j++) {
                 String tempKey;
                 String tempValue = null;
@@ -145,7 +144,7 @@ public class XmlParser {
 
         while(iterator.hasNext()){
             Map.Entry<String,DataStructureProperties> set = (Map.Entry<String,DataStructureProperties>) iterator.next();
-            properties.add(set.getKey());
+            properties.add(set.getValue().getRef());
         }
         return properties;
     }
@@ -166,4 +165,7 @@ public class XmlParser {
     public String getDestroyMethod(String beanId){ return mapBeans.get(beanId).getDestroyMethod(); }
     public String getPropertyValue(String beanId, String propertyName){ return mapBeans.get(beanId).getPropertyValue(propertyName); }
     public String getPropertyRef(String beanId, String propertyName){ return mapBeans.get(beanId).getPropertyRef(propertyName); }
+    public String getConstructorValue(String beanId, String index){ return mapBeans.get(beanId).getConstructorIndexValue(index); }
+    public String getConstructorRef(String beanId, String index){ return mapBeans.get(beanId).getConstructorIndexRef(index); }
+
 }
