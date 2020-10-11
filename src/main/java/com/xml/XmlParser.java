@@ -31,7 +31,6 @@ public class XmlParser {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder;
 
-
         try {
             builder = factory.newDocumentBuilder();
             Document doc = builder.parse(inputFile);
@@ -46,37 +45,20 @@ public class XmlParser {
                 if(node.getNodeType() == Node.ELEMENT_NODE){
                     Element element = (Element) node;
                     System.out.println(element.getAttribute(TAG_CLASS));
-
-                    DataStructureBean beans = new DataStructureBean.BeanBuilder(element.getAttribute(TAG_CLASS))
+                    //Create bean
+                    DataStructureBean bean = new DataStructureBean.BeanBuilder(element.getAttribute(TAG_CLASS))
                             .addScope(element.getAttribute(TAG_SCOPE))
-                            .addConstructorArg(element.getAttribute(TAG_CONSTRUCTOR))
                             .addAutowiringMode(element.getAttribute(TAG_AUTOWIRING_MODE))
                             .addLazyInit(Boolean.parseBoolean(element.getAttribute(TAG_LAZY)))
                             .addInitMethod(element.getAttribute(TAG_INIT))
                             .addDestroyMethod(element.getAttribute(TAG_DESTROY))
                             .build();
-
-                    if(element.getElementsByTagName(TAG_PROPERTY).getLength() != 0) {
-
-                        for (int j = 0; j < element.getElementsByTagName(TAG_PROPERTY).getLength(); j++) {
-
-                            String tempName = element.getElementsByTagName(TAG_PROPERTY).item(j).getAttributes().
-                                    getNamedItem(TAG_PROPERTY_NAME).toString().replaceAll("\"", "").replace("name=","");
-                            String tempValue = null;
-                            String tempRef = element.getElementsByTagName(TAG_PROPERTY).item(j).getAttributes().
-                                    getNamedItem(TAG_PROPERTY_REF).toString().replaceAll("\"", "").replace("ref=","");
-
-                            if (tempValue != null && tempRef != null){
-                                beans.addNewProperty(tempName,tempValue,tempRef);
-                            } else if (tempValue != null) {
-                                beans.addNewProperty(tempName,tempValue,null);
-                            } else{
-                                beans.addNewProperty(tempName,null,tempRef);
-                            }
-
-                        }
-                    }
-                    mapBeans.put(element.getAttribute(TAG_ID),beans);
+                    //Add constructor arguments
+                    addArguments(element, bean, TAG_CONSTRUCTOR);
+                    //Add properties
+                    addArguments(element, bean, TAG_PROPERTY);
+                    //Add bean to map
+                    mapBeans.put(element.getAttribute(TAG_ID),bean);
                 }
             }
 
@@ -87,6 +69,50 @@ public class XmlParser {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void addArguments(Element element, DataStructureBean bean, String id){
+        if(element.getElementsByTagName(id).getLength() != 0) {
+            for (int j = 0; j < element.getElementsByTagName(id).getLength(); j++) {
+                String tempKey;
+                String tempValue = null;
+                String tempRef = null;
+                if(id.equals(TAG_PROPERTY)) {
+                    tempKey = element.getElementsByTagName(id).item(j).getAttributes().
+                            getNamedItem(TAG_PROPERTY_NAME).toString().replaceAll("\"", "").replace("name=", "");
+                }else{
+                    tempKey = element.getElementsByTagName(id).item(j).getAttributes().
+                            getNamedItem(TAG_CONSTRUCTOR_INDEX).toString().replaceAll("\"", "").replace("index=", "");
+                }
+                if(element.getElementsByTagName(id).item(j).getAttributes().getNamedItem(TAG_VALUE) != null) {
+                    tempValue = element.getElementsByTagName(id).item(j).getAttributes().
+                            getNamedItem(TAG_VALUE).toString().replaceAll("\"", "").replace("value=", "");
+                }
+                if(element.getElementsByTagName(id).item(j).getAttributes().getNamedItem(TAG_REF) !=null) {
+                    tempRef = element.getElementsByTagName(id).item(j).getAttributes().
+                            getNamedItem(TAG_REF).toString().replaceAll("\"", "").replace("ref=", "");
+                }
+
+                if(id.equals(TAG_PROPERTY)) {
+                    if (tempValue != null && tempRef != null) {
+                        bean.addNewProperty(tempKey, tempValue, tempRef);
+                    } else if (tempValue != null) {
+                        bean.addNewProperty(tempKey, tempValue, null);
+                    } else {
+                        bean.addNewProperty(tempKey, null, tempRef);
+                    }
+                } else {
+                    if (tempValue != null && tempRef != null) {
+                        bean.addNewConstructorIndex(tempKey, tempValue, tempRef);
+                    } else if (tempValue != null) {
+                        bean.addNewConstructorIndex(tempKey, tempValue, null);
+                    } else {
+                        bean.addNewConstructorIndex(tempKey, null, tempRef);
+                    }
+                }
+            }
+        }
+
     }
 
     public ArrayList<String> getAllCls(){
@@ -118,7 +144,7 @@ public class XmlParser {
 
         while(iterator.hasNext()){
             Map.Entry<String,DataStructureProperties> set = (Map.Entry<String,DataStructureProperties>) iterator.next();
-            properties.add(set.getKey());
+            properties.add(set.getValue().getRef());
         }
         return properties;
     }
@@ -128,9 +154,6 @@ public class XmlParser {
     }
     public String getScope(String beanId){
         return mapBeans.get(beanId).getScope();
-    }
-    public String getConstructorArg(String beanId){
-        return mapBeans.get(beanId).getConstructorArg();
     }
     public String getAutowiringMode(String beanId){
         return mapBeans.get(beanId).getAutowiringMode();
@@ -142,4 +165,7 @@ public class XmlParser {
     public String getDestroyMethod(String beanId){ return mapBeans.get(beanId).getDestroyMethod(); }
     public String getPropertyValue(String beanId, String propertyName){ return mapBeans.get(beanId).getPropertyValue(propertyName); }
     public String getPropertyRef(String beanId, String propertyName){ return mapBeans.get(beanId).getPropertyRef(propertyName); }
+    public String getConstructorValue(String beanId, String index){ return mapBeans.get(beanId).getConstructorIndexValue(index); }
+    public String getConstructorRef(String beanId, String index){ return mapBeans.get(beanId).getConstructorIndexRef(index); }
+
 }

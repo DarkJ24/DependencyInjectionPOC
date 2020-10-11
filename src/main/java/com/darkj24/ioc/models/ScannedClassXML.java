@@ -51,7 +51,7 @@ public class ScannedClassXML implements ScannedClass {
         this.autowiringMode = builder.autowiringMode;
         this.scanType = ScannedClassType.XML;
     }
-  
+
     @Override
     public Class<?> getType() {
         return this.type;
@@ -119,7 +119,7 @@ public class ScannedClassXML implements ScannedClass {
 
     @Override
     public void addDependencyServices(ScannedClass dependencyClasses) {
-        this.dependantClasses.add(dependencyClasses);
+        this.dependencyClasses.add(dependencyClasses);
     }
 
     @Override
