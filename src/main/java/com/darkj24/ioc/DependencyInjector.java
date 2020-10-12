@@ -1,10 +1,8 @@
 package com.darkj24.ioc;
 
 import com.app.*;
-import com.darkj24.ioc.annotations.Lazy;
 import com.darkj24.ioc.enums.DirectoryType;
 import com.darkj24.ioc.models.Directory;
-import com.darkj24.ioc.models.InstantiatedClasses;
 import com.darkj24.ioc.models.ScannedClass;
 import com.darkj24.ioc.services.*;
 
