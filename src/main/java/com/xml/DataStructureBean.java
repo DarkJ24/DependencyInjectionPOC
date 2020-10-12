@@ -3,12 +3,13 @@ package com.xml;
 import com.sun.istack.internal.Nullable;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class DataStructureBean {
     private String cls;
     private String scope;
-    private Map<String, DataStructureConstructor> constructorArgs = new HashMap<String, DataStructureConstructor>();
+    private Map<String, DataStructureProperties> constructorArgs = new LinkedHashMap<String, DataStructureProperties>();
     private String autowiringMode;
     private boolean lazyInit;
     private String initMethod;
@@ -50,7 +51,7 @@ public class DataStructureBean {
 
 
     public void addNewConstructorIndex(String index, String value, String ref){
-        this.constructorArgs.put(index, new DataStructureConstructor(value,ref));
+        this.constructorArgs.put(index, new DataStructureProperties(value,ref));
     }
 
     public String getConstructorIndexValue(String index){
@@ -61,7 +62,7 @@ public class DataStructureBean {
         return this.constructorArgs.get(index).getRef();
     }
 
-    public Map<String, DataStructureConstructor> getConstructorArgs() {
+    public Map<String, DataStructureProperties> getConstructorArgs() {
         return constructorArgs;
     }
 
