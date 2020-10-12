@@ -30,6 +30,7 @@ public class ClassScannerAnnotation implements ClassScanner {
             }
 
             boolean isProvider = false;
+            boolean hasBeans = false;
             Scope scope = Scope.SINGLETON;
             boolean isLazyInit = false;
             AutowiringMode autowiringMode = AutowiringMode.NO;
@@ -39,6 +40,12 @@ public class ClassScannerAnnotation implements ClassScanner {
                     Provider pAnnotation = (Provider) annotation;
                     autowiringMode = pAnnotation.autowire();
                     isProvider = true;
+                    hasBeans = true;
+                }
+                if (annotation.annotationType() == Bean.class) {
+                    Bean bAnnotation = (Bean) annotation;
+                    autowiringMode = bAnnotation.autowire();
+                    hasBeans = true;
                 }
                 if (annotation.annotationType() == Singleton.class) {
                     scope = Scope.SINGLETON;
@@ -51,7 +58,7 @@ public class ClassScannerAnnotation implements ClassScanner {
                 }
             }
 
-            if (isProvider) {
+            if (hasBeans) {
                 ScannedClassAnnotation scannedClass = new ScannedClassAnnotation(
                         cls,
                         this.findSuitableConstructor(cls),
