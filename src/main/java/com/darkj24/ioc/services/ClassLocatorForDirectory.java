@@ -49,7 +49,7 @@ public class ClassLocatorForDirectory implements ClassLocator {
             }
 
             final String className = packageName + file.getName().replace(Constants.JAVA_BINARY_EXTENSION, "");
-
+            System.out.println(className);
             this.locatedClasses.add(Class.forName(className));
         }
     }

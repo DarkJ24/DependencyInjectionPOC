@@ -8,7 +8,9 @@ import com.sun.istack.internal.Nullable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ScannedClassXML implements ScannedClass {
 
@@ -16,7 +18,7 @@ public class ScannedClassXML implements ScannedClass {
 
     private Constructor<?> constructor;
 
-    private Object instance;
+    private Map<String,Object> instances;
 
     private Method[] beans;
 
@@ -38,6 +40,8 @@ public class ScannedClassXML implements ScannedClass {
 
     private ScannedClassType scanType;
 
+    private Method[] setterMethods;
+
     private ScannedClassXML(ScannedClassBuilder builder) {
         this.type = builder.type;
         this.constructor = builder.constructor;
@@ -50,6 +54,8 @@ public class ScannedClassXML implements ScannedClass {
         this.scope = builder.scope;
         this.autowiringMode = builder.autowiringMode;
         this.scanType = ScannedClassType.XML;
+        this.instances = new HashMap<>();
+        this.setterMethods = new Method[0];
     }
 
     @Override
@@ -73,13 +79,23 @@ public class ScannedClassXML implements ScannedClass {
     }
 
     @Override
-    public Object getInstance() {
-        return this.instance;
+    public Map<String, Object> getInstances() {
+        return this.instances;
     }
 
     @Override
-    public void setInstance(Object instance) {
-        this.instance = instance;
+    public void addInstance(String key, Object instance) {
+        this.instances.put(key, instance);
+    }
+
+    @Override
+    public void resetInstances() {
+        this.instances.clear();
+    }
+
+    @Override
+    public void removeInstance(String key) {
+        this.instances.remove(key);
     }
 
     @Override
@@ -140,6 +156,16 @@ public class ScannedClassXML implements ScannedClass {
     @Override
     public void setDestroyMethod(Method method) {
         this.destroyMethod = method;
+    }
+
+    @Override
+    public Method[] getSetterMethods() {
+        return this.setterMethods;
+    }
+
+    @Override
+    public void setSetterMethods(Method[] setterMethods) {
+        this.setterMethods = setterMethods;
     }
 
     @Override

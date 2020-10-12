@@ -7,9 +7,7 @@ import com.darkj24.ioc.services.ListMerger;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class ScannedClassAnnotation implements ScannedClass {
 
@@ -17,9 +15,11 @@ public class ScannedClassAnnotation implements ScannedClass {
 
     private Constructor<?> constructor;
 
-    private Object instance;
+    private Map<String, Object> instances;
 
     private Method[] beans;
+
+    private Method[] setterMethods;
 
     private Method[] requiredMethods;
 
@@ -42,11 +42,12 @@ public class ScannedClassAnnotation implements ScannedClass {
     public ScannedClassAnnotation() {
         this.dependantClasses = new ArrayList<>();
         this.dependencyClasses = new ArrayList<>();
+        this.instances = new HashMap<>();
         this.scanType = ScannedClassType.ANNOTATION;
     }
 
     public ScannedClassAnnotation(Class<?> type, Constructor<?> constructor,
-                                  Method initMethod, Method destroyMethod,
+                                  Method initMethod, Method destroyMethod, Method[] setterMethods,
                                   Scope scope, AutowiringMode autowiringMode, boolean lazyInit,
                                   Method[] beans, Method[] requiredMethods) {
         this();
@@ -55,6 +56,7 @@ public class ScannedClassAnnotation implements ScannedClass {
         this.setBeans(beans);
         this.setInitMethod(initMethod);
         this.setDestroyMethod(destroyMethod);
+        this.setSetterMethods(setterMethods);
         this.setScope(scope);
         this.setAutowiringMode(autowiringMode);
         this.setLazyInit(lazyInit);
@@ -82,13 +84,23 @@ public class ScannedClassAnnotation implements ScannedClass {
     }
 
     @Override
-    public Object getInstance() {
-        return this.instance;
+    public Map<String, Object> getInstances() {
+        return this.instances;
     }
 
     @Override
-    public void setInstance(Object instance) {
-        this.instance = instance;
+    public void addInstance(String key, Object instance) {
+        this.instances.put(key, instance);
+    }
+
+    @Override
+    public void resetInstances() {
+        this.instances.clear();
+    }
+
+    @Override
+    public void removeInstance(String key) {
+        this.instances.remove(key);
     }
 
     @Override
@@ -149,6 +161,16 @@ public class ScannedClassAnnotation implements ScannedClass {
     @Override
     public void setDestroyMethod(Method method) {
         this.destroyMethod = method;
+    }
+
+    @Override
+    public Method[] getSetterMethods() {
+        return this.setterMethods;
+    }
+
+    @Override
+    public void setSetterMethods(Method[] setterMethods) {
+        this.setterMethods = setterMethods;
     }
 
     @Override
@@ -213,9 +235,11 @@ public class ScannedClassAnnotation implements ScannedClass {
         List<Method> newBeans = methodMerger.mergeLists(this.beans,secondClass.getBeans());
         this.beans = newBeans.toArray(new Method[0]);
         //requiredMethods
-        this.constructor = this.constructor == null ? secondClass.getConstructor() : this.constructor;
         List<Method> newRequiredMethods = methodMerger.mergeLists(this.requiredMethods,secondClass.getRequiredMethods());
         this.requiredMethods = newRequiredMethods.toArray(new Method[0]);
+        //setterMethods
+        List<Method> newSetterMethods = methodMerger.mergeLists(this.setterMethods,secondClass.getSetterMethods());
+        this.setterMethods = newSetterMethods.toArray(new Method[0]);
         //dependantClasses
         ListMerger<ScannedClass> sClassMerger = new ListMerger<>();
         this.dependantClasses = sClassMerger.mergeLists(this.dependantClasses,secondClass.getDependantServices());

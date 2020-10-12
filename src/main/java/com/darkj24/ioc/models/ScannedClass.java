@@ -7,6 +7,7 @@ import com.darkj24.ioc.enums.Scope;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.Map;
 
 public interface ScannedClass {
 
@@ -22,13 +23,21 @@ public interface ScannedClass {
 
     public void setConstructor(Constructor<?> constructor);
 
-    public Object getInstance();
+    public Map<String, Object> getInstances();
 
-    public void setInstance(Object instance);
+    public void addInstance(String key, Object instance);
+
+    public void resetInstances();
+
+    public void removeInstance(String key);
 
     public Method[] getBeans();
 
     public void setBeans(Method[] beans);
+
+    public Method[] getSetterMethods();
+
+    public void setSetterMethods(Method[] setterMethods);
 
     public Method[] getRequiredMethods();
 
