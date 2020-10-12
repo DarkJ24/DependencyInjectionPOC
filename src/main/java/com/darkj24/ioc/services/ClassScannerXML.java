@@ -5,6 +5,7 @@ import com.darkj24.ioc.enums.AutowiringMode;
 import com.darkj24.ioc.enums.Scope;
 import com.darkj24.ioc.models.ScannedClass;
 import com.darkj24.ioc.models.ScannedClassXML;
+import com.xml.DataStructureProperties;
 import com.xml.XmlParser;
 
 import java.lang.reflect.Constructor;
@@ -38,15 +39,15 @@ public class ClassScannerXML implements ClassScanner{
     }
 
     public Set<ScannedClass> scanClasses(Set<Class<?>> locatedClasses) {
-        // ojo, el locatedClasses no se esta usando por el momento
         Set<ScannedClassXML> scannedClassesXML = new HashSet<ScannedClassXML>();
         List<String> beanIds = xmlFile.getAllBeanID();
 
         for(String bean:beanIds){
             try {
                 Class cls = Class.forName(xmlFile.getCls(bean));
+
                 ScannedClassXML scannedClass = new ScannedClassXML.ScannedClassBuilder(cls)
-                        //.addConstructor(findConstructor(null)
+                        .addConstructor(findConstructor(cls,bean))
                         .addMethods(new Method[0]) //No necesario en configuración XML
                         .addDependantClasses(new ArrayList<>())
                         .addDependencyClasses(new ArrayList<>())
@@ -99,13 +100,25 @@ public class ClassScannerXML implements ClassScanner{
         return null;
     }
 
-    private Constructor<?> findConstructor (Class<?> cls, String constructorArg){
+    private Constructor<?> findConstructor (Class<?> cls, String bean) throws ClassNotFoundException {
         for (Constructor ctr: cls.getDeclaredConstructors()){
-            if(ctr.getParameterCount()==Integer.parseInt(constructorArg)){
+            Map<String, DataStructureProperties> map = xmlFile.getConstructorArgs(bean);
+            Class[] parameterTypes = ctr.getParameterTypes();
+            if(!map.isEmpty() && ctr.getParameterCount() == map.size()){
+                int count = 0;
+                for(Map.Entry<String, DataStructureProperties> entry: map.entrySet()){
+                    String propertyBean = map.get(entry.getKey()).getRef();
+                    if(parameterTypes[count] == Class.forName(xmlFile.getCls(propertyBean))){
+                        count++;
+                        continue;
+                    }else{
+                        return cls.getConstructors()[0];
+                    }
+                }
                 return ctr;
             }
         }
-        return null;
+        return cls.getConstructors()[0];
     }
 
     private void addDependantClasses(Set<ScannedClassXML> scannedClassesXML,List<String> beanIds) throws ClassNotFoundException {

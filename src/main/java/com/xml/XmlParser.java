@@ -163,6 +163,7 @@ public class XmlParser {
     }
     public String getInitMethod(String beanId){ return mapBeans.get(beanId).getInitMethod(); }
     public String getDestroyMethod(String beanId){ return mapBeans.get(beanId).getDestroyMethod(); }
+    public Map<String, DataStructureProperties> getConstructorArgs(String beanId){ return mapBeans.get(beanId).getConstructorArgs(); }
     public String getPropertyValue(String beanId, String propertyName){ return mapBeans.get(beanId).getPropertyValue(propertyName); }
     public String getPropertyRef(String beanId, String propertyName){ return mapBeans.get(beanId).getPropertyRef(propertyName); }
     public String getConstructorValue(String beanId, String index){ return mapBeans.get(beanId).getConstructorIndexValue(index); }
