@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Manual de Usuario</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="Styles/style.css" />
+    <script src="Scripts/script.js"></script>
+</head>
+<body>
+<h1>
+    Manual de Usuario
+</h1>
+<p>
+    En este documento le explicaremos
+</p>
+<p>
+<!--    This help topic will serve as a quick introduction into basic ClickHelp functionality. It will also help you discover the main features of the WYSIWYG topic editor - your main tool for content creation. In this document, you will find useful documentation links, as well as examples of some elements you can use in your own content.
+    <br />-->
+</p>
+<p>
+    El contenido:
+</p>
+<ul>
+    <li>
+        <a href="#h2_0">
+            Container
+        </a>
+    </li>
+    <li><a href="#h2_1">Screenshots</a></li>
+    <li>
+        <a href="#h2_2">
+            Annotations
+        </a>
+    </li>
+    <li>
+        <a href="#h2_3">
+            XML
+        </a>
+    </li>
+    <li>
+        <a href="#h2_4">
+            Consideraciones adicionales de la implementación de Dependency Injection
+        </a>
+    </li>
+    <li>
+        <a href="#h2_5">
+            Aplicación de chat
+        </a>
+    </li>
+</ul>
+
+<h2 id="h2_0">
+    Container
+</h2>
+
+<p>
+    En esta sección, se explica la estructura realizada del Container desarrollado.
+</p>
+<ul>
+    <li>
+        Estructura general
+        <ul>
+            <li>
+<!--                <a href="http://doc.clickhelp.co/articles/clickhelp-documentation/basic-concepts" target="_blank" title="Basic concepts, terms and notions of ClickHelp">
+                    ClickHelp Basic Concepts
+                </a>-->
+            </li>
+            <li>
+<!--                <a href="http://doc.clickhelp.co/articles/clickhelp-documentation/typical-help-authoring-process" target="_blank" title="Typical Help Authoring Process in ClickHelp">
+                    Typical Help Authoring Process in ClickHelp
+                </a>-->
+            </li>
+        </ul>
+    </li>
+    <li>
+        Clases
+        <ul>
+            <li>
+<!--                <a href="http://doc.clickhelp.co/articles/clickhelp-documentation/import-or-use-project-template" target="_blank" title="Starting a new project in ClickHelp - CHM or template">New Project: Import CHM or Use a Template</a>-->
+            </li>
+            <li>
+               <!-- <a href="http://doc.clickhelp.co/articles/clickhelp-documentation/insert-images" target="_blank" title="Inserting images to help topics">
+                    Inserting images to help topics
+                </a>-->
+            </li>
+            <li>
+              <!--  <a href="http://doc.clickhelp.co/articles/clickhelp-documentation/insert-links" target="_blank" title="Inserting links to help topics">
+                    Inserting links to help topics
+                --></a>
+            </li>
+            <li>
+               <!-- <a href="http://doc.clickhelp.co/articles/clickhelp-documentation/arrange-topics-in-table-of-contents" target="_blank" title="Manage the table of contents elements">
+                    Arrange Topics in Table of Contents
+                </a-->>
+            </li>
+            <li>
+<!--                <a href="http://doc.clickhelp.co/articles/clickhelp-documentation/publish-online-manual" target="_blank" title="Publishing your user manual on the Internet">
+                    Publish User Manual
+                </a>-->
+            </li>
+            <li>
+             <!--   <a href="http://doc.clickhelp.co/articles/clickhelp-documentation/link-to-your-documentation-portal" target="_blank" title="Create links to your online documentation portal">
+                    Link to Your Documentation Portal
+                </a>-->
+            </li>
+            <li>
+                <!--<a href="http://doc.clickhelp.co/articles/clickhelp-documentation/create-a-pdf-manual" target="_blank" title="Create a PDF version of a user manual">
+                    Create a PDF Version of a User Manual
+                </a>-->
+            </li>
+        </ul>
+    </li>
+    <li>
+        Funcionalidades
+        <ul>
+            <li>
+               <!-- <a href="http://doc.clickhelp.co/articles/clickhelp-documentation/share-content-among-topics" target="_blank" title="Re-using content by sharing it among topics">
+                    Share Content Among Topics
+                </a>
+                <br />-->
+            </li>
+            <li>
+                <!--<a href="http://doc.clickhelp.co/articles/clickhelp-documentation/typical-conditional-content" target="_blank" title="Using conditional content in help topics">Conditional Content </a>
+                <br />-->
+            </li>
+            <li>
+<!--                <a href="http://doc.clickhelp.co/articles/clickhelp-documentation/use-variables-in-text" target="_blank" title="Use variables in the topic text">
+
+                    Use Variables in Text
+                </a>-->
+            </li>
+        </ul>
+    </li>
+    <li>
+        Implementación
+        <ul>
+            <li>
+               <!-- <a href="http://doc.clickhelp.co/articles/clickhelp-documentation/create-user-account" target="_blank" title="Creating a new user account in ClickHelp">
+                    Create a New Account
+                </a>
+                <br />-->
+            </li>
+            <li>
+                <!--<a href="http://doc.clickhelp.co/articles/clickhelp-documentation/view-topics-assigned-to-me" target="_blank" title="View topics assigned to me">
+                    View Topics Assigned to Me
+                </a>
+                <br />-->
+            </li>
+        </ul>
+    </li>
+</ul>
+
+<h2 id="h2_2">
+    Annotations
+</h2>
+<p>
+    En esta sección, se explica la implementación y el uso de Annotations en la configuración:
+</p>
+<!--<ul>
+    <li>
+        Assign styles.
+    </li>
+    <li>Images and links can be inserted and changed in documents visually.<br /></li>
+    <li>Insert videos, Flash movies, navigational elements, ready boxes and more - check the <b>Insert</b> tab on the ribbon.</li>
+    <li>Work with tables easily - add/remove rows, cells and columns, merge and split them, change their properties, etc.</li>
+    <li>Use variables, conditional content blocks and snippets - see the <b>Single-Sourcing</b> tab.</li>
+    <li>
+        Paste content from MS Word.
+    </li>
+    <li>
+        Multiple undo/redo operations.
+    </li>
+    <li>
+        Automatic changes saving to the server.
+    </li>
+    <li>
+        Full-screen mode.
+    </li>
+</ul>
+<p>
+    Besides, the editor allows editing the HTML source. The advanced code editor's features include:
+</p>
+<ol>
+    <li>
+        Autocompletion with short inline references on CSS properties,
+        HTML tags and JavaScript objects - all you need to know to write the code without having a web reference opened in another browser tab.
+    </li>
+    <li>
+        Syntax highlighting.
+    </li>
+    <li>
+        Multiple undo/redo operations.
+    </li>
+    <li>
+        Automatic changes saving to the server.
+    </li>
+    <li>
+        Full-screen mode.
+    </li>
+    <li>
+        Search/replace feature with all matches highlighting.
+    </li>
+    <li>
+        Automatic code indentation and highlighting (really useful when you need to make some auto-generated or obfuscated code human-readable).
+    </li>
+    <li>
+        Line numbers.
+    </li>-->
+</ol>
+<h2 id="h2_3">
+    XML
+</h2>
+<p>
+    En esta sección, se explica la implementación y el uso de XMLs en la configuración:
+  <!--  <b>
+        Boxes
+    </b>
+    group of the
+    <b>
+        Insert
+    </b>
+    ribbon tab.
+</p>
+<p>
+    This is an information box:
+</p>
+<table class="infoBox" cellpadding="0" cellspacing="0">
+    <tbody>
+    <tr>
+        <td class="infoBoxImageCell">
+            <img alt="Information" src="Images/info.png" />
+        </td>
+        <td class="infoBoxText">
+            Your information text here.
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>
+    And here is a warning box:
+</p>
+<table class="warningBox" cellpadding="0" cellspacing="0">
+    <tbody>
+    <tr>
+        <td class="warningBoxImageCell">
+            <img alt="Warning" src="Images/warning.png" />
+        </td>
+        <td class="warningBoxText">
+            Your warning text here.
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>
+    And here is an expandable box - note that it looks differently in the editing and reading mode:
+</p>
+
+<div>
+    <div class="nonPrintable" style="margin-top: 10px; margin-bottom: 10px; cursor: pointer; display:table" onclick="toggleBox(this)">
+        [+]
+        <a href="javascript:void(0)">
+            Show More
+        </a>
+    </div>
+    <div class="Article_hiddenBlock nonPrintable" style="margin-top: 10px; margin-bottom: 10px; cursor: pointer; display:table" onclick="toggleBox(this)">
+        [-]
+        <a href="javascript:void(0)">
+            Hide
+        </a>
+    </div>
+    <div class="Article_hiddenBlock" style="padding-left: 20px">
+        Put here the text for your expandable block. Scripts are disabled in the editing mode,
+        so click
+        <strong>
+            "Unlock &amp; View"
+        </strong>
+        to see the box in action.
+        <br />
+        You can also edit the text for the "Show More" and "Hide" elements.
+    </div>
+</div>-->
+
+<h2 id="h2_4">
+    Consideraciones adicionales de la implementación de Dependency Injection
+</h2>
+
+
+<h2 id="h2_5">
+    Aplicación de Chat
+</h2>
+
+<h2 id="h2_7">
+    FAQ
+</h2>
+<p>
+    Preguntas y respuestas comunes:
+</p>
+
+<p class="faqQuestionText">
+    <b>
+        Q:
+    </b>
+    Cómo configurar la aplicación?
+</p>
+<p class="faqAnswer">
+    A:
+<!--    It's easy. First of all, decide if you want one TOC entry per question, or if you would like to have one topic per FAQ category containing many questions. The former approach is good when the answer text is long and self-contained; the latter approach fits the situation when the answers are short and some of them are tightly related to each other. When you have made this decision, go ahead and create the TOC structure you need, then start writing the contents using this Q&amp;A pair as a template - copy&amp;paste it to your topics. If you would like to change the style a little bit, open the project style file and find the FAQ section in it.-->
+</p>
+<br />
+<div class="footer">
+    &copy; Tarea Programada 1 Patrones II 2020. All rights reserved.
+    <br/>
+    <a id="lnkFeedback" target="_top" href="mailto:support@clickhelp.co">Send feedback</a> on this topic to My Company.
+    <script type="text/javascript">
+        if (window['initFooter']) {
+            initFooter();
+        }
+    </script>
+</div>
+</body>
+</html>
