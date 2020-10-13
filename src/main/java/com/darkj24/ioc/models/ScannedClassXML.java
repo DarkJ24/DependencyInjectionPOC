@@ -3,7 +3,6 @@ package com.darkj24.ioc.models;
 import com.darkj24.ioc.enums.AutowiringMode;
 import com.darkj24.ioc.enums.ScannedClassType;
 import com.darkj24.ioc.enums.Scope;
-import com.sun.istack.internal.Nullable;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -244,61 +243,61 @@ public class ScannedClassXML implements ScannedClass {
             this.type=type;
         }
 
-        public ScannedClassBuilder addConstructor (@Nullable Constructor<?> constructor){
+        public ScannedClassBuilder addConstructor (Constructor<?> constructor){
             if(constructor != null) {
                 this.constructor = constructor;
             }
             return this;
         }
 
-        public ScannedClassBuilder addMethods (@Nullable Method[] beans){
+        public ScannedClassBuilder addMethods (Method[] beans){
             if(beans != null) {
                 this.beans = beans;
             }
             return this;
         }
 
-        public ScannedClassBuilder addDependantClasses (@Nullable List<ScannedClass> dependantClasses){
+        public ScannedClassBuilder addDependantClasses (List<ScannedClass> dependantClasses){
             if(dependantClasses != null) {
                 this.dependantClasses = dependantClasses;
             }
             return this;
         }
 
-        public ScannedClassBuilder addDependencyClasses (@Nullable List<ScannedClass> dependencyClasses){
+        public ScannedClassBuilder addDependencyClasses (List<ScannedClass> dependencyClasses){
             if(dependencyClasses != null) {
                 this.dependencyClasses=dependencyClasses;
             }
             return this;
         }
 
-        public ScannedClassBuilder addLazyInit(@Nullable boolean lazyInit){
+        public ScannedClassBuilder addLazyInit(boolean lazyInit){
             this.lazyInit = lazyInit;
             return this;
         }
 
-        public ScannedClassBuilder addInitMethod(@Nullable Method initMethod){
+        public ScannedClassBuilder addInitMethod(Method initMethod){
             if(initMethod != null) {
                 this.initMethod = initMethod;
             }
             return this;
         }
 
-        public ScannedClassBuilder addDestroyMethod(@Nullable Method destroyMethod){
+        public ScannedClassBuilder addDestroyMethod(Method destroyMethod){
             if(destroyMethod != null) {
                 this.destroyMethod = destroyMethod;
             }
             return this;
         }
 
-        public ScannedClassBuilder addScope(@Nullable Scope scope){
+        public ScannedClassBuilder addScope(Scope scope){
             if(scope != null) {
                 this.scope = scope;
             }
             return this;
         }
 
-        public ScannedClassBuilder addAutowiringMode(@Nullable AutowiringMode autowiringMode){
+        public ScannedClassBuilder addAutowiringMode(AutowiringMode autowiringMode){
             if(autowiringMode != null) {
                 this.autowiringMode = autowiringMode;
             }
