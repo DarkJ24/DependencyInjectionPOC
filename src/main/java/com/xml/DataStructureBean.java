@@ -1,6 +1,5 @@
 package com.xml;
 
-import com.sun.istack.internal.Nullable;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -95,14 +94,14 @@ public class DataStructureBean {
             this.cls=cls;
         }
 
-        public BeanBuilder addScope(@Nullable String scope){
+        public BeanBuilder addScope(String scope){
             if(scope != null && !scope.isEmpty()) {
                 this.scope = scope;
             }
             return this;
         }
 
-        public BeanBuilder addAutowiringMode(@Nullable String autowiringMode){
+        public BeanBuilder addAutowiringMode(String autowiringMode){
             if(autowiringMode != null && !autowiringMode.isEmpty()) {
                 this.autowiringMode = autowiringMode;
             }
@@ -114,13 +113,13 @@ public class DataStructureBean {
             return this;
         }
 
-        public BeanBuilder addInitMethod(@Nullable String initMethod){
+        public BeanBuilder addInitMethod(String initMethod){
             if(initMethod != null && !initMethod.isEmpty()) {
                 this.initMethod = initMethod;
             }
             return this;
         }
-        public BeanBuilder addDestroyMethod(@Nullable String destroyMethod){
+        public BeanBuilder addDestroyMethod(String destroyMethod){
             if(destroyMethod != null && !destroyMethod.isEmpty()) {
                 this.destroyMethod = destroyMethod;
             }
