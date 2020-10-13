@@ -1,0 +1,367 @@
+/* This style file has been created automatically per your request.
+
+The following pages can help you get started with CSS:
+* CSS Tutorial (http://w3schools.com/css/default.asp)
+* CSS3 Tutorial (http://w3schools.com/css3/default.asp)
+* CSS Reference (http://w3schools.com/cssref/default.asp) */
+
+body
+{
+  font-family: "Open Sans", "Arial", "Helvetica", sans-serif;
+  margin: 0px;
+  padding: 8px;
+  color: #4D4D4D;
+  text-align:left;
+  line-height: 1.5;
+}
+
+/* Import font from Google Web Fonts */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Open Sans'), local('OpenSans'), url(https://fonts.gstatic.com/s/opensans/v13/cJZKeOuBrn4kERxqtaUH3VtXRa8TVwTICgirnJhmVJw.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+
+a 
+{
+  color: #2C72C8;
+  text-decoration: none;
+}
+
+a:visited 
+{
+  color: #345079;
+}
+
+a:hover 
+{
+  color: #2C72FF;
+  text-decoration: underline;
+}
+
+a:active 
+{
+  color: #2C72C8;
+}
+
+a img
+{
+  border:0;
+}
+
+h1
+{
+  font-family: 'Segoe UI Light', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: 100;
+  color: #000;
+  margin-top:0px;
+  margin-bottom:0px;
+  font-size: 42px;
+  padding-bottom: 15px;
+}
+
+h2
+{
+  font-family: 'Segoe UI Light', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: 100;  
+  width: 100%;
+  text-align: left;
+  color: #000;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-size: 30px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+ul
+{
+  padding-left: 40px;
+}
+ul li
+{
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+ol
+{
+  padding-left: 40px;
+}
+ol li
+{
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+/* --- Custom classes --- */
+
+.screenshot
+{
+  box-shadow: 0px 2px 6px 1px rgba(0,0,0,0.75);
+}
+
+/* Start Page */
+
+.startHeader
+{
+  padding: 8px;
+  background: url('../Images/escheresque.png');
+  font-weight: 400;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.startTable h2
+{
+  padding-top: 0;
+  padding-left: 5px;
+  margin: 0;
+}
+
+.startTable:after
+{
+  content: "";
+  clear: both;
+  display: block;
+}
+
+.startColumn
+{
+  float: left;
+  width: 33%;
+}
+
+/* Landscape phone to portrait tablet */
+@media (max-width: 767px) 
+{ 
+  .startColumn
+  { /* One column per screen */
+    width:100%;
+  }
+}
+
+
+/* Footer element */
+
+.footer
+{
+  font-size: 12px;
+  padding: 8px;
+  border-top: 1px solid #a2a2a2;
+  color: #696969;
+}
+
+/* Tables */
+/* CHTable is the CSS class assigned to all tables by default. Use the styles below to customize the default tables appearance */
+
+.CHTable
+{
+  font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+	font-size: 12px;
+	text-align: left;
+	border-collapse: collapse;
+  border: 1px solid #eee;
+}
+
+.CHTable th
+{
+	font-size: 14px;
+	font-weight: normal;
+	padding: 10px 8px;
+	color: #555555;
+  background: #efefef;
+}
+
+.CHTable td
+{
+	padding: 8px;
+	color: #333;
+  border-right: 1px solid #eee;
+	border-left: 1px solid #eee;
+}
+
+.CHTable tr:nth-child(even)
+{
+	background: #efefef; 
+}
+
+/* Simple table */
+
+.tableSimple
+{
+  font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+	font-size: 12px;
+	width: 100%;
+	text-align: left;
+	border-collapse: collapse;
+	border: 1px solid #616161;
+}
+
+.tableSimple th
+{
+	padding: 15px 10px 10px 10px;
+	font-weight: normal;
+	font-size: 14px;
+	color: #555555;
+  text-align:left;
+}
+
+.tableSimple tbody
+{
+	background: transparent;
+}
+
+.tableSimple td
+{
+	padding: 10px;
+	color: #333;
+	border-top: 1px solid #696969;
+  text-align: left;
+}
+
+.tableSimple tbody tr:hover td
+{
+	color: #black;
+	background: #EFEFEF;
+}
+
+/* Table with both rows and columns having odd/even styles */
+
+.tableVerZebra
+{
+  font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+	font-size: 12px;
+	text-align: left;
+	border-collapse: collapse;
+  background:#eee;
+}
+
+.tableVerZebra th
+{
+	font-size: 14px;
+	font-weight: normal;
+	padding: 12px 15px;
+	border-right: 1px solid #fff;
+	border-left: 1px solid #fff;
+	color: #555555;
+  background:#eee;
+}
+
+.tableVerZebra td
+{
+	padding: 8px 15px;
+	border-right: 1px solid #fff;
+	border-left: 1px solid #fff;
+	color: #333;
+}
+
+.tableVerZebra tr:nth-child(odd)
+{
+	background: #E0E0E0;
+	border-bottom: 1px solid #fff;
+  border-top: 1px solid #fff;
+}
+
+.tableVerZebra tfoot td
+{
+  background: #EEEEEE;
+  color: #333;
+}
+
+/* Info Box */
+.infoBox
+{
+  width: 100%;
+  padding: 3px;
+  font-size: 0.8em;  
+}
+
+.infoBox p:last-child 
+{
+  margin-bottom: 0;
+}
+
+.infoBox p
+{
+  margin-top: 0;
+}
+
+.infoBoxImageCell
+{
+  width: 16px;
+  padding-top: 2px;  
+}
+
+.infoBox td
+{
+  padding: 5px;
+  vertical-align: top;
+}
+
+.warningBox
+{
+  width: 100%;
+  padding: 3px;
+  font-size: 0.8em;
+}
+
+.warningBox p:last-child 
+{
+  margin-bottom: 0;
+}
+
+.warningBox p
+{
+  margin-top: 0;
+}
+
+.warningBox td
+{
+  padding: 5px;
+  vertical-align: top;  
+}
+
+.warningBoxImageCell
+{
+  width: 16px;
+  vertical-align: top;
+  padding-top: 2px;
+}
+
+/* Navigation elements */
+
+.CHNavLinkTop
+{
+}
+
+.CHNavLinkNext
+{
+}
+
+.CHNavLinkPrevious
+{
+}
+
+.CHSeeAlso
+{
+}
+
+.CHBreadcrumb
+{
+}
+
+/* FAQ */
+
+.faqQuestionText
+{
+  font-size: 1.1em;
+  background: #eee;
+  padding: 10px;
+}
+
+.faqQuestionText p
+{
+  padding-top: 10px;
+}
