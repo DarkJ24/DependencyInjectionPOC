@@ -1,20 +1,32 @@
 <beans>
 <bean 
-  id="lowLevelBean"
-  class="com.app.LowLevel" />
-     
-<bean 
+    id="lowLevelBean"
+    class="com.app.LowLevel" />
+
+<bean
+    id="lazyClass"
+    lazyInit="true"
+    class="com.app.LazyClass" >
+    <constructorArg index="0" ref="miniLevel2"/>
+</bean>
+
+<bean
   id="highLevelBean" 
   scope="singleton"
-  constructorArg="0"
   autowiringMode="no"
   lazyInit="true"
   initMethod="init"
   destroyMethod="destroy"  
   class="com.app.HighLevel" >
-    <constructorArg index="0" value="v4" ref="hola1"/>
-    <constructorArg index="1" value="2" ref="hola2"/>
     <property name="lowLevel" ref="lowLevelBean" />
-    <property name="lowLevel2" ref="lowLevelBean" />
+    <property name="lowLevel2" ref="lowLevelBean2" />
 </bean>
+
+<bean
+    id="miniLevel2"
+    class="com.app.MiniLowLevel" />
+
+<bean
+    id="lowLevelBean2"
+    class="com.app.LowLevel2" />
 </beans>
