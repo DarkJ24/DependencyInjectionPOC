@@ -21,8 +21,6 @@ import java.util.Map;
 
 public class ContainerImpl implements Container {
 
-    private Collection<Class<?>> classes;
-
     private Collection<ScannedClass> scannedClasses;
 
     private final Map<Class<?>, ScannedClass> mapScannedClasses;
@@ -38,11 +36,10 @@ public class ContainerImpl implements Container {
     }
 
     @Override
-    public void init(Collection<Class<?>> classes, Collection<ScannedClass> scannedClasses) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    public void init(Collection<ScannedClass> scannedClasses) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         if (this.hasInitialized) {
             throw new AlreadyInitializedException("Class has already Initialized");
         }
-        this.classes = classes;
         this.scannedClasses = scannedClasses;
         for (ScannedClass sClass : scannedClasses) {
             mapScannedClasses.put(sClass.getType(), sClass);
@@ -226,11 +223,6 @@ public class ContainerImpl implements Container {
     @Override
     public ScannedClass getScannedClass(Class<?> cls) {
         return mapScannedClasses.get(cls);
-    }
-
-    @Override
-    public Collection<Class<?>> getAllClasses() {
-        return this.classes;
     }
 
     @Override

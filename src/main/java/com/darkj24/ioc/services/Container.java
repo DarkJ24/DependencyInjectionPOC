@@ -7,7 +7,7 @@ import java.util.Collection;
 
 public interface Container {
 
-    void init(Collection<Class<?>> classes, Collection<ScannedClass> scannedClasses) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException;
+    void init(Collection<ScannedClass> scannedClasses) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException;
 
     <T> T getInstance(Class<T> cls, String key) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException;
 
@@ -20,8 +20,6 @@ public interface Container {
     void destroyInstance(Object obj) throws InvocationTargetException, IllegalAccessException;
 
     ScannedClass getScannedClass(Class<?> cls);
-
-    Collection<Class<?>> getAllClasses();
 
     Collection<ScannedClass> getAllScannedClasses();
 }

@@ -9,39 +9,96 @@ import com.darkj24.ioc.services.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class DependencyInjector {
 
-    public static void run(Class<?> startupClass) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
-        ClassScanner classScanner = new ClassScannerAnnotation();
-        Directory directory = new DirectoryResolverImpl().resolveDirectory(startupClass);
-        ClassLocator classLocator = new ClassLocatorForDirectory();
-        if (directory.getType() == DirectoryType.JAR_FILE) {
-            classLocator = new ClassLocatorForJarFile();
+    public static final Container container;
+
+    static {
+        container = new ContainerImpl();
+    }
+
+    public static Container run(String logInfo, Class<?> startupClass) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+        return run(startupClass, null, logInfo);
+    }
+
+    public static Container run(String contextPath, String logInfo) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+        return run(null, contextPath, logInfo);
+    }
+
+    public static Container run(Class<?> startupClass) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+        return run(startupClass, null, "normal");
+    }
+
+    public static Container run(String contextPath) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+        return run(null, contextPath, "normal");
+    }
+
+    public static Container run(Class<?> startupClass, String contextPath) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+        return run(startupClass, contextPath, "normal");
+    }
+
+    public static Container run(Class<?> startupClass, String contextPath, String logInfo) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+        Set<ScannedClass> finalClasses = new HashSet<>();
+        Set<ScannedClass> scannedClassAnnotations = new HashSet<>();
+        Set<ScannedClass> scannedClassXML = new HashSet<>();
+        if (startupClass != null) {
+            ClassScanner classScanner = new ClassScannerAnnotation();
+            Directory directory = new DirectoryResolverImpl().resolveDirectory(startupClass);
+            ClassLocator classLocator = new ClassLocatorForDirectory();
+            if (directory.getType() == DirectoryType.JAR_FILE) {
+                classLocator = new ClassLocatorForJarFile();
+            }
+
+            Set<Class<?>> locatedClasses = classLocator.locateClasses(directory.getName());
+            scannedClassAnnotations = classScanner.scanClasses(locatedClasses);
+
+            if (logInfo.equals("verbose")) {
+                System.out.println("****CONFIGURACIÓN ANNOTATION****");
+                printScannedClassesDetail(scannedClassAnnotations);
+            }
+
+            if (contextPath == null){
+                finalClasses = scannedClassAnnotations;
+            }
         }
 
-        Set<Class<?>> locatedClasses = classLocator.locateClasses(directory.getName());
-        Set<ScannedClass> scannedClassAnnotations = classScanner.scanClasses(locatedClasses);
-        //System.out.println(scannedClassAnnotations);
-        System.out.println("****CONFIGURACIÓN ANNOTATION****");
-        printScannedClassesDetail(scannedClassAnnotations);
+        if (contextPath != null) {
+            scannedClassXML = new ClassScannerXML(contextPath)
+                    .scanClasses();
 
-        Set<ScannedClass> scannedClassXML = new ClassScannerXML("src/main/resources/context.xml")
-                .scanClasses();
-        System.out.println("****CONFIGURACIÓN XML****");
-        printScannedClassesDetail(scannedClassXML);
+            if (logInfo.equals("verbose")) {
+                System.out.println("****CONFIGURACIÓN XML****");
+                printScannedClassesDetail(scannedClassXML);
+            }
 
-        ClassScannerMerger classMerger = new ClassScannerMerger();
-        Set<ScannedClass> finalClasses = classMerger.mergeClasses(scannedClassAnnotations, scannedClassXML);
-        System.out.println("****CONFIGURACIÓN GLOBAL****");
-        printScannedClassesDetail(finalClasses);
+            if (startupClass == null){
+                finalClasses = scannedClassXML;
+            }
+        }
+
+        if (contextPath != null && startupClass != null) {
+            ClassScannerMerger classMerger = new ClassScannerMerger();
+            finalClasses = classMerger.mergeClasses(scannedClassAnnotations, scannedClassXML);
+
+        }
+
+        if (logInfo.equals("verbose")) {
+            System.out.println("****CONFIGURACIÓN GLOBAL****");
+            printScannedClassesDetail(finalClasses);
+        }
+
+        container.init(finalClasses);
+
+        return container;
+    }
+
+    private static void testConfiguration(Container container) throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
 
         System.out.println("\n\n****CONTAINER****\n\n");
-        Container container = new ContainerImpl();
-        container.init(locatedClasses, finalClasses);
-        //System.out.println(container.getInstance(HighLevel.class, HighLevel.class.getName()));
         System.out.println(container.getInstance(LowLevel.class, LowLevel.class.getName()));
         System.out.println(container.getInstance(MiniLowLevel.class, "miniLevel1"));
         System.out.println(container.getInstance(MiniLowLevel.class, "miniLevel2"));
@@ -52,6 +109,7 @@ public class DependencyInjector {
         container.destroyInstance(lz);
         System.out.println(container.getInstance(LazyClass.class));
         container.destroy();
+
     }
 
     private static void printScannedClassesDetail(Set<ScannedClass> classes){
@@ -71,7 +129,8 @@ public class DependencyInjector {
 
 
     public static void main(String[] args) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        run(MainApplication.class);
+        Container c = run(MainApplication.class, "src/main/resources/context.xml", "verbose");
+        testConfiguration(c);
     }
 
 }
