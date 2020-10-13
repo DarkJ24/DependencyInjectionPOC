@@ -172,7 +172,7 @@ public class ClassScannerAnnotation implements ClassScanner {
         final Set<Method> setterMethods = new HashSet<>();
 
         for (Method method : cls.getDeclaredMethods()) {
-            if (method.getParameterCount() == 1 && (method.getReturnType() == void.class || method.getReturnType() == Void.class)) {
+            if (method.getParameterCount() == 1 && (method.getReturnType() == void.class || method.getReturnType() == Void.class) && method.getName().startsWith("set")) {
                 boolean isSetter = true;
                 for (Parameter p : method.getParameters()) {
                     if (!(p.getType().isAnnotationPresent(Bean.class) || p.getType().isAnnotationPresent(Provider.class))) {

@@ -68,7 +68,9 @@ public class ContainerImpl implements Container {
         if (cls.getScope() == Scope.SINGLETON){
             object = cls.getInstances().get(cls.getType().getName());
         } else if(cls.getScope() == Scope.PROTOTYPE) {
-            object = cls.getInstances().get(name);
+            if (!name.equals(cls.getType().getName())) {
+                object = cls.getInstances().get(name);
+            }
         }
         if (object != null) {
             return object;
@@ -132,7 +134,7 @@ public class ContainerImpl implements Container {
                 }
                 beanClass.addInstance(key, generatedBean);
                 // Generate Beans
-                generateBeans(cls, object);
+                generateBeans(beanClass, generatedBean);
                 cls.addDependantService(beanClass);
             }
         }
