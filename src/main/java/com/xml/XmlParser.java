@@ -36,7 +36,6 @@ public class XmlParser {
             Document doc = builder.parse(inputFile);
             doc.getDocumentElement().normalize();
             doc.getDocumentElement().getNodeName();
-            System.out.println(doc.getDocumentElement().getNodeName());
             NodeList nodeList = doc.getElementsByTagName(TAG_BEAN);
 
             for (int i=0; i<nodeList.getLength(); i++){
@@ -44,7 +43,6 @@ public class XmlParser {
 
                 if(node.getNodeType() == Node.ELEMENT_NODE){
                     Element element = (Element) node;
-                    System.out.println(element.getAttribute(TAG_CLASS));
                     //Create bean
                     DataStructureBean bean = new DataStructureBean.BeanBuilder(element.getAttribute(TAG_CLASS))
                             .addScope(element.getAttribute(TAG_SCOPE))
