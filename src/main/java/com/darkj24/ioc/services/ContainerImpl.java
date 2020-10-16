@@ -44,7 +44,6 @@ public class ContainerImpl implements Container {
         for (ScannedClass sClass : scannedClasses) {
             mapScannedClasses.put(sClass.getType(), sClass);
         }
-        this.hasInitialized = true;
         // Check Required Methods
         // Validate cross XML check
         // Get Instances
@@ -59,6 +58,7 @@ public class ContainerImpl implements Container {
         for (ScannedClass sClass : scannedClasses) {
             callSetters(sClass);
         }
+        this.hasInitialized = true;
     }
 
     private Object getInstance(ScannedClass cls, String name) throws NeedsDependencyException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException {
@@ -70,6 +70,8 @@ public class ContainerImpl implements Container {
         } else if(cls.getScope() == Scope.PROTOTYPE) {
             if (!name.equals(cls.getType().getName())) {
                 object = cls.getInstances().get(name);
+            } else {
+                name = name + '-' + cls.getInstances().size();
             }
         }
         if (object != null) {
@@ -89,7 +91,11 @@ public class ContainerImpl implements Container {
         if (cls.getInitMethod() != null) {
             cls.getInitMethod().invoke(object);
         }
-        cls.addInstance(cls.getType().getName(), object);
+        // Call Setters
+        if (this.hasInitialized) {
+            callSetters(cls, object);
+        }
+        cls.addInstance(name, object);
         // Generate Beans
         generateBeans(cls, object);
         return object;
@@ -132,6 +138,10 @@ public class ContainerImpl implements Container {
                 if (cls.getInitMethod() != null) {
                     cls.getInitMethod().invoke(object);
                 }
+                // Call Setters
+                if (this.hasInitialized) {
+                    callSetters(beanClass, generatedBean);
+                }
                 beanClass.addInstance(key, generatedBean);
                 // Generate Beans
                 generateBeans(beanClass, generatedBean);
@@ -144,44 +154,44 @@ public class ContainerImpl implements Container {
         return scanner.scanClass(cls, true);
     }
 
+    private void callSetters(ScannedClass sClass, Object instance) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        for (Method method : sClass.getSetterMethods()){
+            String key = method.getParameters()[0].getType().getName();
+            Annotation annotation = method.getDeclaredAnnotation(Qualifier.class);
+            if (annotation != null) {
+                Qualifier qAnnotation = (Qualifier) annotation;
+                key = qAnnotation.value();
+            } else if (sClass.getAutowiringMode() == AutowiringMode.BY_NAME) {
+                key = method.getName();
+            } else {
+                if (sClass.getInstances().get(key) != null) {
+                    return;
+                }
+            }
+            Parameter[] mParameters = method.getParameters();
+            Object[] methodArgs = new Object[mParameters.length];
+            for (int i = 0; i < mParameters.length; i++) {
+                Qualifier qualifier = mParameters[i].getDeclaredAnnotation(Qualifier.class);
+                Object pInstance = getInstance(mapScannedClasses.get(mParameters[i].getType()), qualifier != null ? qualifier.value() : key);
+                if (pInstance == null) {
+                    //No parameter to generate instance
+                    continue;
+                }
+                methodArgs[i] = pInstance;
+            }
+            method.invoke(instance, methodArgs);
+        }
+    }
+
     private void callSetters(ScannedClass sClass) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         for (Map.Entry<String,Object> entry : sClass.getInstances().entrySet()) {
-            for (Method method : sClass.getSetterMethods()){
-                String key = method.getReturnType().getName();
-                Annotation annotation = method.getDeclaredAnnotation(Qualifier.class);
-                if (annotation != null) {
-                    Qualifier qAnnotation = (Qualifier) annotation;
-                    key = qAnnotation.value();
-                } else if (sClass.getAutowiringMode() == AutowiringMode.BY_NAME) {
-                    key = method.getName();
-                } else {
-                    if (sClass.getInstances().get(key) != null) {
-                        return;
-                    }
-                }
-                Parameter[] mParameters = method.getParameters();
-                Object[] methodArgs = new Object[mParameters.length];
-                for (int i = 0; i < mParameters.length; i++) {
-                    Qualifier qualifier = mParameters[i].getDeclaredAnnotation(Qualifier.class);
-                    Object pInstance = getInstance(mapScannedClasses.get(mParameters[i].getType()), qualifier != null ? qualifier.value() : key);
-                    if (pInstance == null) {
-                        //No parameter to generate instance
-                        continue;
-                    }
-                    methodArgs[i] = pInstance;
-                }
-                method.invoke(entry.getValue(), methodArgs);
-            }
+            callSetters(sClass, entry.getValue());
         }
     }
 
     @Override
     public <T> T getInstance(Class<T> cls, String key) throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
-        T obj = (T) mapScannedClasses.get(cls).getInstances().get(key);
-        if (obj == null) {
-            obj = (T) getInstance(getScannedClass(cls),key);
-            callSetters(getScannedClass(cls));
-        }
+        T obj = (T) getInstance(getScannedClass(cls),key);
         return obj;
     }
 
